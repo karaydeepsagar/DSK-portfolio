@@ -122,12 +122,12 @@ const DevOpsAtom = ({ theme }) => {
                                         animate={{
                                             rotate: [-(angle + 0), -(angle + 360 * orbit.direction)],
                                             scale: [0.8, 1.1, 0.8],
-                                            opacity: [0.4, 0.9, 0.4]
+                                            opacity: 1
                                         }}
                                         transition={{
                                             rotate: { duration: orbit.speed, repeat: Infinity, ease: "linear" },
                                             scale: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-                                            opacity: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                                            opacity: { duration: 0 }
                                         }}
                                         style={{
                                             color: tool.color,

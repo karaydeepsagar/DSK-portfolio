@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
@@ -9,25 +9,43 @@ const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const rafIdRef = useRef(null);
+    const lastActiveRef = useRef('home');
 
     useEffect(() => {
-        const handleScroll = () => {
+        const sections = ['home', 'projects', 'experience', 'skills', 'blog', 'contact'];
+
+        const updateOnScroll = () => {
+            rafIdRef.current = null;
             setScrolled(window.scrollY > 50);
 
-            const sections = ['home', 'projects', 'experience', 'skills', 'blog', 'contact'];
             for (const section of sections) {
                 const element = document.getElementById(section);
-                if (element) {
-                    const rect = element.getBoundingClientRect();
-                    if (rect.top <= 150 && rect.bottom >= 150) {
+                if (!element) continue;
+                const rect = element.getBoundingClientRect();
+                if (rect.top <= 150 && rect.bottom >= 150) {
+                    if (lastActiveRef.current !== section) {
+                        lastActiveRef.current = section;
                         setActiveSection(section);
-                        break;
                     }
+                    break;
                 }
             }
         };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+
+        const onScroll = () => {
+            if (rafIdRef.current != null) return;
+            rafIdRef.current = window.requestAnimationFrame(updateOnScroll);
+        };
+
+        updateOnScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+            if (rafIdRef.current != null) {
+                window.cancelAnimationFrame(rafIdRef.current);
+            }
+        };
     }, []);
 
     const navLinks = [

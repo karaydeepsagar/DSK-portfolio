@@ -11,6 +11,7 @@ const Contact = ({ data }) => {
     const [copied, setCopied] = useState(null);
     const [status, setStatus] = useState({ sending: false, sent: false, error: false });
     const [isMobile, setIsMobile] = useState(false);
+    const [formState, setFormState] = useState({ name: '', email: '' });
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -19,10 +20,15 @@ const Contact = ({ data }) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const copyToClipboard = (text, type) => {
-        navigator.clipboard.writeText(text);
-        setCopied(type);
-        setTimeout(() => setCopied(null), 2000);
+    const copyToClipboard = async (text, type) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopied(type);
+            setTimeout(() => setCopied(null), 2000);
+        } catch {
+            setStatus({ sending: false, sent: false, error: true });
+            setTimeout(() => setStatus(s => ({ ...s, error: false })), 5000);
+        }
     };
 
     const sendEmail = (e) => {
@@ -46,6 +52,8 @@ const Contact = ({ data }) => {
                 setTimeout(() => setStatus(s => ({ ...s, error: false })), 5000);
             });
     };
+
+    const isProjectDetailsEnabled = formState.name.trim().length > 0 && formState.email.trim().length > 0;
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -130,34 +138,34 @@ const Contact = ({ data }) => {
                     >
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                             {/* Email Item */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', padding: '1.1rem 1.25rem', background: theme.secondaryBg, borderRadius: '16px', transition: 'background 0.3s', border: `1px solid ${theme.border}` }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', padding: '1.1rem 1.25rem', background: theme.secondaryBg, borderRadius: '16px', transition: 'background 0.3s', border: `1px solid ${theme.border}`, width: '100%', maxWidth: '100%' }}>
                                 <div style={{ background: `${theme.accent}1A`, padding: '12px', borderRadius: '12px', color: theme.accent }}>
                                     <Mail size={24} />
                                 </div>
-                                <div style={{ flex: 1 }}>
+                                <div style={{ flex: 1, minWidth: 0 }}>
                                     <span style={{ display: 'block', fontSize: '0.85rem', color: theme.mutedText, marginBottom: '4px' }}>Email</span>
-                                    <span style={{ fontSize: '1.1rem', fontWeight: 500, color: theme.primaryText }}>{data.email}</span>
+                                    <span style={{ fontSize: '1.1rem', fontWeight: 500, color: theme.primaryText, display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{data.email}</span>
                                 </div>
                                 <button
                                     onClick={() => copyToClipboard(data.email, 'email')}
-                                    style={{ background: 'transparent', border: 'none', color: theme.mutedText, cursor: 'pointer', padding: '8px' }}
+                                    style={{ background: 'transparent', border: 'none', color: theme.mutedText, cursor: 'pointer', padding: '8px', flexShrink: 0 }}
                                 >
                                     {copied === 'email' ? <Check size={18} color="#46d369" /> : <Copy size={18} />}
                                 </button>
                             </div>
 
                             {/* Phone Item */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', padding: '1.1rem 1.25rem', background: theme.secondaryBg, borderRadius: '16px', border: `1px solid ${theme.border}` }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', padding: '1.1rem 1.25rem', background: theme.secondaryBg, borderRadius: '16px', border: `1px solid ${theme.border}`, width: '100%', maxWidth: '100%' }}>
                                 <div style={{ background: theme.mode === 'dark' ? 'rgba(78, 205, 196, 0.1)' : 'rgba(78, 205, 196, 0.15)', padding: '12px', borderRadius: '12px', color: '#4ECDC4' }}>
                                     <Phone size={24} />
                                 </div>
-                                <div style={{ flex: 1 }}>
+                                <div style={{ flex: 1, minWidth: 0 }}>
                                     <span style={{ display: 'block', fontSize: '0.85rem', color: theme.mutedText, marginBottom: '4px' }}>Phone</span>
-                                    <span style={{ fontSize: '1.1rem', fontWeight: 500, color: theme.primaryText }}>{data.phone}</span>
+                                    <span style={{ fontSize: '1.1rem', fontWeight: 500, color: theme.primaryText, display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{data.phone}</span>
                                 </div>
                                 <button
                                     onClick={() => copyToClipboard(data.phone, 'phone')}
-                                    style={{ background: 'transparent', border: 'none', color: theme.mutedText, cursor: 'pointer', padding: '8px' }}
+                                    style={{ background: 'transparent', border: 'none', color: theme.mutedText, cursor: 'pointer', padding: '8px', flexShrink: 0 }}
                                 >
                                     {copied === 'phone' ? <Check size={18} color="#46d369" /> : <Copy size={18} />}
                                 </button>
@@ -243,6 +251,8 @@ const Contact = ({ data }) => {
                                     name="user_name"
                                     placeholder="Your Name"
                                     required
+                                    value={formState.name}
+                                    onChange={(e) => setFormState(s => ({ ...s, name: e.target.value }))}
                                     style={{ width: '100%', padding: '16px', background: theme.secondaryBg, border: `1px solid ${theme.border}`, borderRadius: '12px', color: theme.primaryText, outline: 'none', fontSize: '1rem' }}
                                 />
                             </div>
@@ -252,8 +262,18 @@ const Contact = ({ data }) => {
                                     name="user_email"
                                     placeholder="Your Email"
                                     required
+                                    value={formState.email}
+                                    onChange={(e) => setFormState(s => ({ ...s, email: e.target.value }))}
                                     style={{ width: '100%', padding: '16px', background: theme.secondaryBg, border: `1px solid ${theme.border}`, borderRadius: '12px', color: theme.primaryText, outline: 'none', fontSize: '1rem' }}
                                 />
+                            </div>
+                            <div style={{
+                                fontSize: '0.9rem',
+                                color: theme.mutedText,
+                                marginTop: '-6px',
+                                paddingLeft: '4px'
+                            }}>
+                                Enter your name and email first to unlock “Project Details”.
                             </div>
                             <div className="input-group">
                                 <input
@@ -267,9 +287,10 @@ const Contact = ({ data }) => {
                                 <textarea
                                     name="message"
                                     rows="5"
-                                    placeholder="Project Details"
+                                    placeholder={isProjectDetailsEnabled ? 'Project Details' : 'Project Details (unlock by entering Name + Email above)'}
                                     required
-                                    style={{ width: '100%', padding: '16px', background: theme.secondaryBg, border: `1px solid ${theme.border}`, borderRadius: '12px', color: theme.primaryText, resize: 'none', outline: 'none', fontSize: '1rem', fontFamily: 'inherit' }}
+                                    disabled={!isProjectDetailsEnabled}
+                                    style={{ width: '100%', padding: '16px', background: theme.secondaryBg, border: `1px solid ${theme.border}`, borderRadius: '12px', color: theme.primaryText, resize: 'none', outline: 'none', fontSize: '1rem', fontFamily: 'inherit', opacity: isProjectDetailsEnabled ? 1 : 0.7, cursor: isProjectDetailsEnabled ? 'text' : 'not-allowed' }}
                                 ></textarea>
                             </div>
 

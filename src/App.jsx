@@ -53,8 +53,8 @@ function App() {
                                         color 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
                                         border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
                         }
-                        body, html, div, section, nav {
-                            will-change: background-color, color;
+                        body, html {
+                            will-change: auto;
                         }
                         html {
                             scroll-behavior: smooth;

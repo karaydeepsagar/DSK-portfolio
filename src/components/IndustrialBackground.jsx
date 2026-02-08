@@ -22,8 +22,10 @@ const IndustrialBackground = ({ type }) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // If no type or type is skills, return just a subtle ambient glow or nothing
+    // Technical Expertise (skills) panel should not have the right-side animation/background.
     if (type === 'skills') return null;
+
+    const infinityPath = 'M 400,200 C 400,100 550,100 600,200 C 650,300 800,300 800,200 C 800,100 650,100 600,200 C 550,300 400,300 400,200 Z';
 
     const getTheme = () => {
         switch (type) {
@@ -68,6 +70,10 @@ const IndustrialBackground = ({ type }) => {
 
     const backgroundTheme = getTheme();
     const { icons, mainColor, secondaryColor, opacity } = backgroundTheme;
+    const nonRedIconColor = theme.mode === 'dark' ? theme.primaryText : theme.secondaryText;
+    const infinityOpacity = isMobile
+        ? (theme.mode === 'dark' ? 0.14 : 0.18)
+        : (theme.mode === 'dark' ? 0.25 : 0.34);
 
     return (
         <div style={{
@@ -80,6 +86,57 @@ const IndustrialBackground = ({ type }) => {
             zIndex: 0,
             pointerEvents: 'none'
         }}>
+            {/* Infinity Loop Animation (Right Side) - Classic dashed flow style */}
+            <svg
+                width="100%"
+                height="100%"
+                viewBox="0 0 800 400"
+                preserveAspectRatio="xMidYMid slice"
+                style={{
+                    position: 'absolute',
+                    top: '50%',
+                    right: isMobile ? '-32%' : '-22%',
+                    transform: isMobile ? 'translateY(-50%) scale(0.9)' : 'translateY(-50%)',
+                    opacity: infinityOpacity,
+                    zIndex: 0
+                }}
+            >
+                <motion.path
+                    d={infinityPath}
+                    fill="none"
+                    stroke={secondaryColor}
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    opacity={theme.mode === 'dark' ? 0.55 : 0.35}
+                />
+                {/* Interleaved dash animation: white and red stay separated */}
+                <motion.path
+                    d={infinityPath}
+                    fill="none"
+                    stroke={theme.primaryText}
+                    strokeWidth="3"
+                    strokeLinecap="butt"
+                    strokeLinejoin="round"
+                    strokeDasharray="28 92"
+                    animate={{ strokeDashoffset: [60, -180] }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                    opacity={theme.mode === 'dark' ? 0.22 : 0.14}
+                />
+                <motion.path
+                    d={infinityPath}
+                    fill="none"
+                    stroke={mainColor}
+                    strokeWidth="4"
+                    strokeLinecap="butt"
+                    strokeLinejoin="round"
+                    strokeDasharray="28 92"
+                    animate={{ strokeDashoffset: [0, -240] }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                    opacity={theme.mode === 'dark' ? 0.55 : 0.62}
+                />
+            </svg>
+
             {/* 1. Large Themed Animation Cluster (Right Aligned or Centered on Mobile) */}
             <div style={{
                 position: 'absolute',
@@ -120,12 +177,12 @@ const IndustrialBackground = ({ type }) => {
                     style={{
                         position: 'absolute',
                         inset: 0,
-                        border: '2px solid rgba(255, 255, 255, 0.1)',
+                        border: theme.mode === 'dark' ? '2px solid rgba(255, 255, 255, 0.1)' : '2px solid rgba(0, 0, 0, 0.08)',
                         borderRadius: '50%',
-                        borderTop: `4px solid var(--netflix-red)`,
-                        borderBottom: `4px solid #fff`, // Increased white presence
-                        borderRight: `2px solid rgba(255, 255, 255, 0.3)`,
-                        opacity: 0.7
+                        borderTop: `4px solid ${theme.accent}`,
+                        borderBottom: theme.mode === 'dark' ? `4px solid ${theme.primaryText}` : '4px solid rgba(26, 26, 26, 0.22)',
+                        borderRight: theme.mode === 'dark' ? '2px solid rgba(255, 255, 255, 0.3)' : '2px solid rgba(0, 0, 0, 0.14)',
+                        opacity: theme.mode === 'dark' ? 0.7 : 0.55
                     }}
                 />
 
@@ -172,7 +229,7 @@ const IndustrialBackground = ({ type }) => {
                                 style={{
                                     position: 'absolute',
                                     left: orbitRadius,
-                                    color: idx % 2 === 0 ? 'var(--netflix-red)' : secondaryColor,
+                                    color: idx % 2 === 0 ? 'var(--netflix-red)' : nonRedIconColor,
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
@@ -186,7 +243,7 @@ const IndustrialBackground = ({ type }) => {
                                     position: 'absolute',
                                     width: '40px',
                                     height: '40px',
-                                    background: idx % 2 === 0 ? 'var(--netflix-red)' : secondaryColor,
+                                    background: idx % 2 === 0 ? 'var(--netflix-red)' : nonRedIconColor,
                                     filter: 'blur(30px)',
                                     opacity: 0.3,
                                     zIndex: -1
@@ -197,41 +254,7 @@ const IndustrialBackground = ({ type }) => {
                 })}
             </div>
 
-            {/* 3. Symbolic Connection Path (Infinity) - Hiden on Mobile */}
-            {!isMobile && (
-                <svg
-                    width="100%"
-                    height="100%"
-                    viewBox="0 0 800 400"
-                    preserveAspectRatio="xMidYMid slice"
-                    style={{ position: 'absolute', opacity: 0.25, right: '-15%', zIndex: 0 }}
-                >
-                    <motion.path
-                        d="M 400,200 C 400,100 550,100 600,200 C 650,300 800,300 800,200 C 800,100 650,100 600,200 C 550,300 400,300 400,200 Z"
-                        fill="none"
-                        stroke={secondaryColor}
-                        strokeWidth="3"
-                    />
-                    <motion.path
-                        d="M 400,200 C 400,100 550,100 600,200 C 650,300 800,300 800,200 C 800,100 650,100 600,200 C 550,300 400,300 400,200 Z"
-                        fill="none"
-                        stroke="#fff"
-                        strokeWidth="3.5"
-                        strokeDasharray="15 150"
-                        animate={{ strokeDashoffset: [0, -150] }}
-                        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-                    />
-                    <motion.path
-                        d="M 400,200 C 400,100 550,100 600,200 C 650,300 800,300 800,200 C 800,100 650,100 600,200 C 550,300 400,300 400,200 Z"
-                        fill="none"
-                        stroke="var(--netflix-red)"
-                        strokeWidth="4"
-                        strokeDasharray="30 120"
-                        animate={{ strokeDashoffset: [0, -150] }}
-                        transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-                    />
-                </svg>
-            )}
+            {/* 3. (Replaced) Infinity loop is now the shared right-side animation above */}
 
             {/* Subtle Grid Pattern */}
             <div style={{
