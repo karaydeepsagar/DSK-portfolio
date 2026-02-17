@@ -87,7 +87,6 @@ function App() {
                             display: flex;
                             flex-direction: column;
                             justify-content: center;
-                            contain: content; /* Significant performance boost for layout engine */
                         }
 
                         /* Disable heavy effects on low-power devices if needed */

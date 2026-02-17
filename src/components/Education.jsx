@@ -2,20 +2,33 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { GraduationCap, Calendar } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import IndustrialBackground from './IndustrialBackground';
 
 const Education = ({ data }) => {
     const { theme } = useTheme();
     const [isMobile, setIsMobile] = useState(false);
+    const [isInView, setIsInView] = useState(false);
+    const sectionRef = React.useRef(null);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
         handleResize();
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+
+        const observer = new IntersectionObserver(
+            ([entry]) => setIsInView(entry.isIntersecting),
+            { threshold: 0.1 }
+        );
+        if (sectionRef.current) observer.observe(sectionRef.current);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            observer.disconnect();
+        };
     }, []);
 
     return (
-        <section id="education" style={{ position: 'relative', overflow: 'hidden' }}>
+        <section ref={sectionRef} id="education" style={{ position: 'relative', overflow: 'hidden' }}>
             <div
                 className="section-padding"
                 style={{
@@ -54,24 +67,20 @@ const Education = ({ data }) => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: '-80px' }}
                             transition={{ duration: 0.55, delay: idx * 0.05 }}
-                            whileHover={{ y: -5 }}
+                            whileHover={{ y: -5, boxShadow: theme.mode === 'dark' ? `0 0 30px ${theme.accent}33` : `0 0 20px rgba(0,0,0,0.1)` }}
                             style={{
-                                background: theme.mode === 'dark' ? theme.cardBg : theme.glassBg,
-                                backdropFilter: theme.mode === 'dark' ? 'blur(20px)' : 'blur(16px)',
-                                WebkitBackdropFilter: theme.mode === 'dark' ? 'blur(20px)' : 'blur(16px)',
+                                background: theme.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.95)',
                                 borderRadius: '26px',
                                 padding: isMobile ? '22px' : '30px',
                                 border: `1px solid ${theme.border}`,
-                                // Strictly left and right glow: high offset + aggressive negative spread
-                                boxShadow: `-30px 0 35px -20px ${theme.accent}77, 30px 0 35px -20px ${theme.accent}77`,
+                                // Simplified theme-aware glow to prevent rendering "shades"
+                                boxShadow: theme.mode === 'dark'
+                                    ? `-20px 0 30px -15px #ffffff33, 20px 0 30px -15px #ffffff33`
+                                    : `0 10px 30px -10px rgba(0,0,0,0.1)`,
                                 position: 'relative',
                                 display: 'flex',
                                 alignItems: 'center',
-                                cursor: 'default',
-                                userSelect: 'none',
-                                transform: 'translate3d(0, 0, 0)',
-                                backfaceVisibility: 'hidden',
-                                WebkitBackfaceVisibility: 'hidden'
+                                userSelect: 'none'
                             }}
                         >
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '18px', flexWrap: 'wrap', width: '100%' }}>
