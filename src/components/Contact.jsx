@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 import { motion } from 'framer-motion';
-import { Mail, Phone, Linkedin, Github, Send, Copy, Check } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Github, Send, Copy, Check } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import { useTheme } from '../context/ThemeContext';
 
@@ -10,19 +11,12 @@ const Contact = ({ data }) => {
     const sectionRef = useRef(null);
     const [copied, setCopied] = useState(null);
     const [status, setStatus] = useState({ sending: false, sent: false, error: false });
-    const [isMobile, setIsMobile] = useState(false);
+    const { isMobile } = useBreakpoint();
     const [formState, setFormState] = useState({ name: '', email: '', company: '' });
     const [isInView, setIsInView] = useState(true);
 
     // Centered infinity loop path (0..800 viewBox)
     const infinityPath = 'M 200,200 C 200,100 350,100 400,200 C 450,300 600,300 600,200 C 600,100 450,100 400,200 C 350,300 200,300 200,200 Z';
-
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 768);
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
 
     useEffect(() => {
         const element = sectionRef.current;
@@ -53,10 +47,9 @@ const Contact = ({ data }) => {
         e.preventDefault();
         setStatus({ sending: true, sent: false, error: false });
 
-        // Replace these with your actual IDs from EmailJS Dashboard
-        const SERVICE_ID = "service_081bfnh";
-        const TEMPLATE_ID = "template_8bi1rzo";
-        const PUBLIC_KEY = "ce75KhFQtTzjSjB-o";
+        const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+        const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+        const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
         emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY)
             .then((result) => {
@@ -91,6 +84,29 @@ const Contact = ({ data }) => {
                     <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, color: theme.primaryText, marginBottom: '12px' }}>
                         <span>Let's</span> <span style={{ color: theme.accent }}>Collaborate</span>
                     </h2>
+                    {/* Open to Work badge */}
+                    <div style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        background: `${theme.accent}12`,
+                        border: `1px solid ${theme.borderAccent}`,
+                        borderRadius: '50px',
+                        padding: '7px 18px',
+                        marginBottom: '14px',
+                        backdropFilter: 'blur(10px)'
+                    }}>
+                        <span style={{
+                            width: '8px',
+                            height: '8px',
+                            borderRadius: '50%',
+                            background: theme.accent,
+                            boxShadow: `0 0 8px ${theme.accent}`,
+                            display: 'inline-block',
+                            flexShrink: 0
+                        }} />
+                        <span style={{ fontSize: '0.82rem', fontWeight: '700', color: theme.accent, letterSpacing: '1.5px', textTransform: 'uppercase' }}>Open to Work — Available Now</span>
+                    </div>
                     <p style={{ color: theme.mutedText, fontSize: '1rem', maxWidth: '680px', margin: '0 auto' }}>
                         Ready to elevate your infrastructure? I'm available for new opportunities in Cloud Architecture and DevOps engineering.
                     </p>
@@ -158,8 +174,8 @@ const Contact = ({ data }) => {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                             {/* Email Item */}
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', padding: '1.1rem 1.25rem', background: theme.secondaryBg, borderRadius: '16px', transition: 'background 0.3s', border: `1px solid ${theme.border}`, width: '100%', maxWidth: '100%' }}>
-                                <div style={{ background: `${theme.accent}1A`, padding: '12px', borderRadius: '12px', color: theme.accent }}>
-                                    <Mail size={24} />
+                                <div style={{ background: `${theme.accent}1A`, width: '48px', height: '48px', flexShrink: 0, borderRadius: '12px', color: theme.accent, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <Mail size={22} />
                                 </div>
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                     <span style={{ display: 'block', fontSize: '0.85rem', color: theme.mutedText, marginBottom: '4px' }}>Email</span>
@@ -175,8 +191,8 @@ const Contact = ({ data }) => {
 
                             {/* Phone Item */}
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', padding: '1.1rem 1.25rem', background: theme.secondaryBg, borderRadius: '16px', border: `1px solid ${theme.border}`, width: '100%', maxWidth: '100%' }}>
-                                <div style={{ background: theme.mode === 'dark' ? 'rgba(78, 205, 196, 0.1)' : 'rgba(78, 205, 196, 0.15)', padding: '12px', borderRadius: '12px', color: '#4ECDC4' }}>
-                                    <Phone size={24} />
+                                <div style={{ background: theme.mode === 'dark' ? 'rgba(78, 205, 196, 0.1)' : 'rgba(78, 205, 196, 0.15)', width: '48px', height: '48px', flexShrink: 0, borderRadius: '12px', color: '#4ECDC4', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <Phone size={22} />
                                 </div>
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                     <span style={{ display: 'block', fontSize: '0.85rem', color: theme.mutedText, marginBottom: '4px' }}>Phone</span>
@@ -188,6 +204,27 @@ const Contact = ({ data }) => {
                                 >
                                     {copied === 'phone' ? <Check size={18} color="#46d369" /> : <Copy size={18} />}
                                 </button>
+                            </div>
+
+                            {/* Location Item */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', padding: '1.1rem 1.25rem', background: theme.secondaryBg, borderRadius: '16px', border: `1px solid ${theme.border}`, width: '100%', maxWidth: '100%' }}>
+                                <div style={{ background: theme.mode === 'dark' ? 'rgba(74, 246, 38, 0.08)' : 'rgba(34, 197, 94, 0.12)', width: '48px', height: '48px', flexShrink: 0, borderRadius: '12px', color: '#4AF626', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <MapPin size={22} />
+                                </div>
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                    <span style={{ display: 'block', fontSize: '0.85rem', color: theme.mutedText, marginBottom: '4px' }}>Location</span>
+                                    <span style={{ fontSize: '1rem', fontWeight: 600, color: theme.primaryText, display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Bengaluru, Hyderabad, Chennai</span>
+                                    <span style={{ fontSize: '0.8rem', color: theme.accent, fontWeight: 600, display: 'block', marginTop: '2px' }}>Open to Relocation</span>
+                                </div>
+                                <a
+                                    href="https://maps.google.com/?q=Bengaluru,India"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{ background: 'transparent', border: 'none', color: theme.mutedText, cursor: 'pointer', padding: '8px', flexShrink: 0, display: 'flex', alignItems: 'center', textDecoration: 'none' }}
+                                    title="Open in Google Maps"
+                                >
+                                    <MapPin size={18} />
+                                </a>
                             </div>
 
                             {/* Links Section */}

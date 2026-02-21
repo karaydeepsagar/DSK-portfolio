@@ -1,31 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { GraduationCap, Calendar } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import IndustrialBackground from './IndustrialBackground';
+import { useBreakpoint } from '../hooks/useBreakpoint';
+import SpotlightCard from './SpotlightCard';
 
 const Education = ({ data }) => {
     const { theme } = useTheme();
-    const [isMobile, setIsMobile] = useState(false);
-    const [isInView, setIsInView] = useState(false);
+    const { isMobile } = useBreakpoint();
     const sectionRef = React.useRef(null);
 
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 768);
-        handleResize();
-        window.addEventListener('resize', handleResize);
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.12, delayChildren: 0.1 }
+        }
+    };
 
-        const observer = new IntersectionObserver(
-            ([entry]) => setIsInView(entry.isIntersecting),
-            { threshold: 0.1 }
-        );
-        if (sectionRef.current) observer.observe(sectionRef.current);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-            observer.disconnect();
-        };
-    }, []);
+    const cardVariants = {
+        hidden: { opacity: 0, y: 30, scale: 0.95 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: { type: 'spring', stiffness: 100, damping: 20 }
+        }
+    };
 
     return (
         <section ref={sectionRef} id="education" style={{ position: 'relative', overflow: 'hidden' }}>
@@ -59,80 +60,111 @@ const Education = ({ data }) => {
                     </p>
                 </motion.div>
 
-                <div style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                    {data.map((item, idx) => (
-                        <motion.div
-                            key={`${item.degree}-${item.year}-${idx}`}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: '-80px' }}
-                            transition={{ duration: 0.55, delay: idx * 0.05 }}
-                            whileHover={{ y: -5, boxShadow: theme.mode === 'dark' ? `0 0 30px ${theme.accent}33` : `0 0 20px rgba(0,0,0,0.1)` }}
-                            style={{
-                                // Increased transparency for both modes
-                                background: theme.mode === 'dark' ? 'rgba(255, 255, 255, 0.03)' : 'rgba(255, 255, 255, 0.6)',
-                                backdropFilter: 'blur(12px)', // Stronger blur for glass effect
-                                borderRadius: '20px', // Slightly smaller radius
-                                padding: isMobile ? '16px' : '24px', // Reduced padding
-                                border: `1px solid ${theme.border}`,
-                                // Simplified theme-aware glow to prevent rendering "shades"
-                                boxShadow: theme.mode === 'dark'
-                                    ? `-20px 0 30px -15px #ffffff33, 20px 0 30px -15px #ffffff33`
-                                    : `0 10px 30px -10px rgba(0,0,0,0.1)`,
-                                position: 'relative',
-                                display: 'flex',
-                                alignItems: 'center',
-                                userSelect: 'none'
-                            }}
-                        >
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '18px', flexWrap: 'wrap', width: '100%' }}>
-                                <div style={{ display: 'flex', gap: '14px', alignItems: 'center', minWidth: '260px', flex: 1 }}>
-                                    <div
-                                        style={{
-                                            width: '44px',
-                                            height: '44px',
-                                            borderRadius: '14px',
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.1 }}
+                    style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '20px' }}
+                >
+                    {data.map((item, idx) => {
+                        const labels = ['Undergraduate', 'Diploma', 'Secondary School'];
+                        return (
+                            <motion.div
+                                key={`${item.degree}-${item.year}-${idx}`}
+                                variants={cardVariants}
+                            >
+                                <SpotlightCard
+                                    style={{
+                                        background: theme.cardBg,
+                                        boxShadow: theme.cardShadow
+                                    }}
+                                >
+                                    <div style={{ padding: isMobile ? '20px 18px' : '26px 28px', display: 'flex', alignItems: 'center', gap: '20px' }}>
+                                        {/* Icon */}
+                                        <div style={{
+                                            width: '50px',
+                                            height: '50px',
+                                            flexShrink: 0,
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            background: `${theme.accent}1A`,
+                                            borderRadius: '14px',
+                                            background: `linear-gradient(135deg, ${theme.accent}20 0%, ${theme.accent}08 100%)`,
                                             border: `1px solid ${theme.borderAccent}`,
-                                            color: theme.accent,
-                                            flexShrink: 0
-                                        }}
-                                    >
-                                        <GraduationCap size={22} />
-                                    </div>
-                                    <div>
-                                        <h3 style={{ fontSize: '1.25rem', fontWeight: '900', color: theme.primaryText, lineHeight: '1.25', marginBottom: '6px' }}>
-                                            {item.degree}
-                                            {item.institute ? (
-                                                <span style={{ color: theme.secondaryText, fontWeight: 700 }}> &nbsp;-&nbsp; {item.institute}</span>
-                                            ) : null}
-                                        </h3>
-                                    </div>
-                                </div>
+                                            color: theme.accent
+                                        }}>
+                                            <GraduationCap size={22} />
+                                        </div>
 
-                                <div
-                                    style={{
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '10px',
-                                        padding: '12px 16px',
-                                        borderRadius: '14px',
-                                        border: `1px solid ${theme.border}`,
-                                        background: theme.secondaryBg,
-                                        color: theme.secondaryText,
-                                        fontWeight: 700
-                                    }}
-                                >
-                                    <Calendar size={18} style={{ color: theme.accent }} />
-                                    <span>{item.year}</span>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+                                        {/* Content */}
+                                        <div style={{ flex: 1, minWidth: 0 }}>
+                                            {/* Top row: label + year */}
+                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px', flexWrap: 'wrap', gap: '8px' }}>
+                                                <span style={{
+                                                    fontSize: '0.68rem',
+                                                    fontWeight: '700',
+                                                    letterSpacing: '2.5px',
+                                                    textTransform: 'uppercase',
+                                                    color: theme.accent,
+                                                    background: `${theme.accent}12`,
+                                                    border: `1px solid ${theme.accent}30`,
+                                                    borderRadius: '50px',
+                                                    padding: '3px 11px',
+                                                    lineHeight: 1.6
+                                                }}>
+                                                    {labels[idx]}
+                                                </span>
+                                                <span style={{
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: '6px',
+                                                    fontSize: '0.82rem',
+                                                    fontWeight: '600',
+                                                    color: theme.mutedText,
+                                                    background: theme.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)',
+                                                    border: `1px solid ${theme.border}`,
+                                                    borderRadius: '50px',
+                                                    padding: '3px 11px'
+                                                }}>
+                                                    <Calendar size={12} style={{ color: theme.accent, flexShrink: 0 }} />
+                                                    {item.year}
+                                                </span>
+                                            </div>
+
+                                            {/* Degree | Institute — same font style */}
+                                            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+                                                <span style={{
+                                                    fontSize: isMobile ? '1rem' : '1.15rem',
+                                                    fontWeight: '700',
+                                                    color: theme.primaryText,
+                                                    letterSpacing: '-0.01em',
+                                                    lineHeight: '1.3'
+                                                }}>
+                                                    {item.degree}
+                                                </span>
+                                                {item.institute && (
+                                                    <>
+                                                        <span style={{ color: theme.borderAccent, fontSize: '1rem', fontWeight: '300', lineHeight: 1 }}>|</span>
+                                                        <span style={{
+                                                            fontSize: isMobile ? '1rem' : '1.15rem',
+                                                            fontWeight: '700',
+                                                            color: theme.mutedText,
+                                                            letterSpacing: '-0.01em',
+                                                            lineHeight: '1.3'
+                                                        }}>
+                                                            {item.institute}
+                                                        </span>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </SpotlightCard>
+                            </motion.div>
+                        );
+                    })}
+                </motion.div>
             </div>
         </section>
     );

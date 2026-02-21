@@ -10,10 +10,10 @@ const DSKIntro = ({ onComplete }) => {
         // Sequence:
         // 0.5s: Triangles start flying in
         // 2.0s: Text Reveal
-        // 5.5s: Finish
+        // 4.0s: Finish
         const t1 = setTimeout(() => setPhase('triangles'), 500);
         const t2 = setTimeout(() => setPhase('text'), 2000);
-        const t3 = setTimeout(() => onComplete(), 5500);
+        const t3 = setTimeout(() => onComplete(), 4000);
 
         return () => {
             clearTimeout(t1);

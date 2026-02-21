@@ -1,21 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 import { motion } from 'framer-motion';
-import { Github, ExternalLink, Code2 } from 'lucide-react';
+import { Github, ExternalLink } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import SpotlightCard from './SpotlightCard';
 
 const Projects = ({ data }) => {
     const { theme } = useTheme();
-    const [isMobile, setIsMobile] = useState(false);
+    const { isMobile } = useBreakpoint();
     const sectionRef = useRef(null);
     const [isInView, setIsInView] = useState(true);
-
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 768);
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
 
     useEffect(() => {
         const element = sectionRef.current;
@@ -103,17 +97,7 @@ const Projects = ({ data }) => {
                                         whileHover={{ scale: 1.1 }}
                                         transition={{ duration: 0.5 }}
                                     />
-                                    <div style={{
-                                        position: 'absolute',
-                                        top: '15px',
-                                        left: '15px',
-                                        background: theme.mode === 'dark' ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.9)',
-                                        padding: '8px',
-                                        borderRadius: '12px',
-                                        backdropFilter: 'blur(5px)'
-                                    }}>
-                                        <Code2 size={20} color={theme.accent} />
-                                    </div>
+
                                 </div>
 
                                 <div style={{ padding: '30px', flex: 1, display: 'flex', flexDirection: 'column' }}>

@@ -1,23 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 import { motion } from 'framer-motion';
 import { Briefcase, Calendar, Building2, UserCircle, CheckCircle2 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 const Experience = ({ data }) => {
     const { theme } = useTheme();
-    const [isMobile, setIsMobile] = useState(false);
+    const { isMobile } = useBreakpoint();
     const sectionRef = useRef(null);
     const [isInView, setIsInView] = useState(true);
 
     // Centered infinity loop path (occupies roughly x:200..600 in a 0..800 viewBox)
     const infinityPath = 'M 200,200 C 200,100 350,100 400,200 C 450,300 600,300 600,200 C 600,100 450,100 400,200 C 350,300 200,300 200,200 Z';
-
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 768);
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
 
     useEffect(() => {
         const element = sectionRef.current;

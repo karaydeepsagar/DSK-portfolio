@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 import { motion } from 'framer-motion';
 import { Cloud, Terminal, Monitor, Settings, Box, Globe, Server, Activity } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
@@ -127,14 +128,7 @@ const Skills = ({ data }) => {
     const { theme } = useTheme();
     const categories = Object.keys(data);
     const [hoveredCategory, setHoveredCategory] = useState(null);
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 768);
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    const { isMobile } = useBreakpoint();
 
     // Staggered Container Variant for list entrance
     const containerVariants = {
@@ -241,7 +235,12 @@ const Skills = ({ data }) => {
                                     <div style={{ padding: '2rem', position: 'relative', zIndex: 1, height: '100%', display: 'flex', flexDirection: 'column' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '1.5rem' }}>
                                             <div style={{
-                                                padding: '12px',
+                                                width: '50px',
+                                                height: '50px',
+                                                flexShrink: 0,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
                                                 borderRadius: '12px',
                                                 background: `linear-gradient(135deg, ${theme.accent}1A 0%, transparent 100%)`,
                                                 border: `1px solid ${theme.borderAccent}`,

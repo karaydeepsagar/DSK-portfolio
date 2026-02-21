@@ -5,7 +5,7 @@ export const portfolioData = {
         email: "karaydeepsagar@gmail.com",
         phone: "+91 8522011851",
         linkedin: "linkedin.com/in/karaydeepsagar",
-        location: "Kakinada, Andhra Pradesh, India",
+        "location Availability": "Bengaluru, Hyderabad, Chennai (Open to Relocation)",
         languages: ["English", "Hindi", "Telugu"],
         summary: "Architecting the future of Cloud Infrastructure through expert design of resilient multi-cloud ecosystems across AWS, Azure, and GCP. Specialist in advanced CI/CD Automation, Kubernetes Orchestration, and the strategic integration of diverse DevOps tools to streamline project deliverables. Proven leader in designing zero-trust scalable systems that bridge the gap between high-velocity development and robust operational stability."
     },
@@ -17,7 +17,7 @@ export const portfolioData = {
         "Infrastructure as Code": ["Ansible", "Terraform", "Cloud Formation (AWS)", "ARM Azure"],
         Containerization: ["Docker", "Kubernetes", "Packer"],
         Monitoring: ["AWS CloudWatch", "Prometheus & Grafana", "ELK Stack", "Datadog"],
-        "AI Tools": ["Anti Gravity", "Claude AI", "ChatGPT", "Gemini Pro"]
+        "AI Tools": ["AntiGravity", "Claude AI", "ChatGPT", "Gemini", "OpenClaw"]
     },
     certifications: [
         {
@@ -33,12 +33,12 @@ export const portfolioData = {
     ],
     education: [
         {
-            degree: "Bachelor of Technology",
-            institute: "Electrical & Electronics Engineering",
+            degree: "Bachelor of Technology - EEE",
+            institute: "Ideal Institute of Technology",
             year: "2016 - 2019"
         },
         {
-            degree: "Diploma Degree",
+            degree: "Diploma Degree - EEE",
             institute: "Chaitanya Institute of Technology",
             year: "2012 - 2015"
         },

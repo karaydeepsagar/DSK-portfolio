@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 
@@ -10,14 +11,7 @@ import { useTheme } from '../context/ThemeContext';
 const PremiumEffects = () => {
     const { theme } = useTheme();
     const { scrollYProgress } = useScroll();
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 768);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
+    const { isMobile } = useBreakpoint();
 
     // Smooth out the scroll progress
     const scaleX = useSpring(scrollYProgress, {
@@ -74,7 +68,7 @@ const PremiumEffects = () => {
                 </svg>
             </div>
 
-            <style jsx="true" global="true">{`
+            <style>{`
                 /* Ensure grain stays fixed and covers everything */
                 .grain-overlay {
                     position: fixed;

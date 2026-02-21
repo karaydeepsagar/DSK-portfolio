@@ -1,20 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, ArrowRight, BookOpen } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 const Blog = ({ data }) => {
     const { theme } = useTheme();
-    const [isMobile, setIsMobile] = useState(false);
+    const { isMobile } = useBreakpoint();
     const sectionRef = useRef(null);
     const [isInView, setIsInView] = useState(true);
-
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 768);
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
 
     useEffect(() => {
         const element = sectionRef.current;
@@ -124,6 +118,8 @@ const Blog = ({ data }) => {
 
                                 <a
                                     href={post.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     style={{
                                         display: 'inline-flex',
                                         alignItems: 'center',

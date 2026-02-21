@@ -6,6 +6,7 @@ import {
     Lock, Zap, Layout, Monitor, MessageSquare
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 
 /**
  * IndustrialBackground: Versatile background component for various sections.
@@ -13,23 +14,12 @@ import { useTheme } from '../context/ThemeContext';
  */
 const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'right', isActive = true }) => {
     const { theme } = useTheme();
-    const [isMobile, setIsMobile] = useState(false);
-    const [viewportWidth, setViewportWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1440);
+    const { isTablet: isMobile, viewportWidth } = useBreakpoint();
     const [isScrolling, setIsScrolling] = useState(false);
     const scrollingRef = useRef(false);
     const scrollTimeoutRef = useRef(null);
 
-    useEffect(() => {
-        const handleResize = () => {
-            setViewportWidth(window.innerWidth);
-            setIsMobile(window.innerWidth < 1024);
-        };
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    // While the user is actively scrolling, avoid expensive paint effects.
+// While the user is actively scrolling, avoid expensive paint effects.
     useEffect(() => {
         const onScroll = () => {
             if (!scrollingRef.current) {

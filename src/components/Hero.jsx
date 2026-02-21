@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Play, Info } from 'lucide-react';
+import { Play, Info, Download, CheckCircle } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import IndustrialBackground from './IndustrialBackground';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 // DevOps & Cloud Icons from multiple sets to ensure availability
 import { SiDocker, SiKubernetes, SiAnsible, SiJenkins, SiDatadog, SiAmazonwebservices, SiTerraform, SiGrafana, SiGithub } from 'react-icons/si';
 import { VscAzure, VscTerminal } from 'react-icons/vsc';
@@ -46,14 +47,7 @@ const GcpGradientIcon = ({ size = 24 }) => (
  */
 const DevOpsAtom = ({ theme, isActive = true }) => {
     const desktopLeftOffset = '3%';
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 768);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
+    const { isMobile } = useBreakpoint();
 
     const orbits = [
         {
@@ -181,19 +175,11 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
 
 const Hero = ({ data }) => {
     const { theme } = useTheme();
-    const [isMobile, setIsMobile] = useState(false);
-    const [isLandscape, setIsLandscape] = useState(false);
+    const { isTablet: isMobile, isLandscape } = useBreakpoint();
     const [isInView, setIsInView] = useState(true);
     const sectionRef = React.useRef(null);
 
     useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth < 1024);
-            setIsLandscape(window.innerWidth > window.innerHeight && window.innerWidth < 1100);
-        };
-        handleResize();
-        window.addEventListener('resize', handleResize);
-
         // Smart animation pause using Intersection Observer
         const observer = new IntersectionObserver(
             ([entry]) => setIsInView(entry.isIntersecting),
@@ -201,10 +187,7 @@ const Hero = ({ data }) => {
         );
         if (sectionRef.current) observer.observe(sectionRef.current);
 
-        return () => {
-            window.removeEventListener('resize', handleResize);
-            observer.disconnect();
-        };
+        return () => observer.disconnect();
     }, []);
 
     return (
@@ -376,8 +359,8 @@ const Hero = ({ data }) => {
                                 onClick={() => document.getElementById('experience').scrollIntoView({ behavior: 'smooth' })}
                                 className="netflix-btn"
                                 style={{
-                                    padding: '18px 45px',
-                                    fontSize: '1.1rem',
+                                    padding: '12px 28px',
+                                    fontSize: '0.9rem',
                                     borderRadius: '12px',
                                     background: theme.glassBg,
                                     backdropFilter: 'blur(15px)',
@@ -389,7 +372,7 @@ const Hero = ({ data }) => {
                                     fontWeight: '600',
                                     display: 'flex',
                                     alignItems: 'center',
-                                    gap: '10px'
+                                    gap: '8px'
                                 }}
                                 onMouseOver={(e) => {
                                     e.currentTarget.style.transform = 'translateY(-3px)';
@@ -402,36 +385,73 @@ const Hero = ({ data }) => {
                                     e.currentTarget.style.boxShadow = `0 0 20px ${theme.accent}1A`;
                                 }}
                             >
-                                <Info size={16} color={theme.accent} /> Career Path
+                                <Info size={13} color={theme.accent} /> Career Path
                             </button>
+                            <a
+                                href="/Resume.pdf"
+                                download="Deep_Sagar_Karay_Resume.pdf"
+                                className="netflix-btn"
+                                style={{
+                                    padding: '12px 28px',
+                                    fontSize: '0.9rem',
+                                    borderRadius: '12px',
+                                    background: theme.glassBg,
+                                    color: theme.primaryText,
+                                    border: `1px solid ${theme.borderAccent}`,
+                                    boxShadow: `0 0 20px ${theme.accent}1A`,
+                                    transition: 'all 0.3s ease',
+                                    fontWeight: '600',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    textDecoration: 'none',
+                                    backdropFilter: 'blur(15px)',
+                                    cursor: 'pointer'
+                                }}
+                                onMouseOver={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(-3px)';
+                                    e.currentTarget.style.background = `${theme.accent}1A`;
+                                    e.currentTarget.style.boxShadow = `0 0 30px ${theme.accent}4D`;
+                                }}
+                                onMouseOut={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.background = theme.glassBg;
+                                    e.currentTarget.style.boxShadow = `0 0 20px ${theme.accent}1A`;
+                                }}
+                            >
+                                <Download size={13} color={theme.accent} /> Resume
+                            </a>
                             <button
                                 onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
                                 className="netflix-btn"
                                 style={{
-                                    padding: '18px 45px',
-                                    fontSize: '1.1rem',
+                                    padding: '12px 28px',
+                                    fontSize: '0.9rem',
                                     borderRadius: '12px',
-                                    background: theme.mode === 'dark' ? 'rgba(255, 255, 255, 0.9)' : theme.accent,
-                                    color: theme.mode === 'dark' ? '#000' : '#fff',
-                                    border: `1px solid ${theme.border}`,
-                                    boxShadow: theme.mode === 'dark' ? '0 10px 30px rgba(255, 255, 255, 0.1)' : `0 10px 30px ${theme.accent}33`,
+                                    background: theme.glassBg,
+                                    backdropFilter: 'blur(15px)',
+                                    color: theme.primaryText,
+                                    border: `1px solid ${theme.borderAccent}`,
+                                    boxShadow: `0 0 20px ${theme.accent}1A`,
                                     transition: 'all 0.3s ease',
                                     cursor: 'pointer',
                                     fontWeight: '600',
                                     display: 'flex',
                                     alignItems: 'center',
-                                    gap: '10px'
+                                    gap: '8px'
                                 }}
                                 onMouseOver={(e) => {
                                     e.currentTarget.style.transform = 'translateY(-3px)';
-                                    e.currentTarget.style.boxShadow = theme.mode === 'dark' ? '0 15px 40px rgba(255, 255, 255, 0.2)' : `0 15px 40px ${theme.accent}55`;
+                                    e.currentTarget.style.background = `${theme.accent}1A`;
+                                    e.currentTarget.style.boxShadow = `0 0 30px ${theme.accent}4D`;
                                 }}
                                 onMouseOut={(e) => {
                                     e.currentTarget.style.transform = 'translateY(0)';
-                                    e.currentTarget.style.boxShadow = theme.mode === 'dark' ? '0 10px 30px rgba(255, 255, 255, 0.1)' : `0 10px 30px ${theme.accent}33`;
+                                    e.currentTarget.style.background = theme.glassBg;
+                                    e.currentTarget.style.boxShadow = `0 0 20px ${theme.accent}1A`;
                                 }}
                             >
-                                <Play fill={theme.mode === 'dark' ? 'black' : 'white'} size={16} /> Let's Talk
+                                <Play size={13} color={theme.accent} /> Let's Talk
                             </button>
                         </div>
                     </motion.div>
