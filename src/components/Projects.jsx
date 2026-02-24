@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
 import { motion } from 'framer-motion';
 import { Github, ExternalLink } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
@@ -27,8 +27,8 @@ const Projects = ({ data }) => {
         <section ref={sectionRef} id="projects" style={{ position: 'relative', overflow: 'hidden' }}>
             {/* Nucleus glow (background) sized for this panel (RIGHT) */}
             <motion.div
-                animate={isInView ? { opacity: [0.10, 0.18, 0.10], scale: [1, 1.08, 1] } : false}
-                transition={isInView ? { duration: 13, repeat: Infinity, ease: 'easeInOut' } : undefined}
+                animate={(isInView && !shouldReduceAnimations) ? { opacity: [0.10, 0.18, 0.10], scale: [1, 1.08, 1] } : false}
+                transition={(isInView && !shouldReduceAnimations) ? { duration: 13, repeat: Infinity, ease: 'easeInOut' } : undefined}
                 style={{
                     position: 'absolute',
                     top: '50%',

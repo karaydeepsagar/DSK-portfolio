@@ -6,7 +6,7 @@ import {
     Lock, Zap, Layout, Monitor, MessageSquare
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
 
 /**
  * IndustrialBackground: Versatile background component for various sections.
@@ -140,8 +140,8 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                 }}>
                     {/* Center nucleus glow (blurred) */}
                     <motion.div
-                        animate={{ scale: [1, 1.12, 1], opacity: [0.35, 0.6, 0.35] }}
-                        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+                        animate={!shouldReduceAnimations ? { scale: [1, 1.12, 1], opacity: [0.35, 0.6, 0.35] } : {}}
+                        transition={!shouldReduceAnimations ? { duration: 10, repeat: Infinity, ease: 'easeInOut' } : {}}
                         style={{
                             position: 'absolute',
                             width: glowSize,
@@ -186,8 +186,8 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                             strokeLinecap="butt"
                             strokeLinejoin="round"
                             strokeDasharray="28 92"
-                            animate={{ strokeDashoffset: [60, -180] }}
-                            transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
+                            animate={!shouldReduceAnimations ? { strokeDashoffset: [60, -180] } : {}}
+                            transition={!shouldReduceAnimations ? { duration: 7, repeat: Infinity, ease: 'linear' } : {}}
                             opacity={theme.mode === 'dark' ? 0.42 : 0.38}
                         />
                         <motion.path
@@ -198,8 +198,8 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                             strokeLinecap="butt"
                             strokeLinejoin="round"
                             strokeDasharray="28 92"
-                            animate={{ strokeDashoffset: [0, -240] }}
-                            transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
+                            animate={!shouldReduceAnimations ? { strokeDashoffset: [0, -240] } : {}}
+                            transition={!shouldReduceAnimations ? { duration: 7, repeat: Infinity, ease: 'linear' } : {}}
                             opacity={theme.mode === 'dark' ? 0.58 : 0.52}
                         />
                     </svg>
@@ -278,8 +278,8 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                         strokeLinecap="butt"
                         strokeLinejoin="round"
                         strokeDasharray="28 92"
-                        animate={(homeBoost && isActive) ? { strokeDashoffset: [60, -180] } : {}}
-                        transition={(homeBoost && isActive) ? { duration: 6, repeat: Infinity, ease: "linear" } : {}}
+                        animate={(homeBoost && isActive && !shouldReduceAnimations) ? { strokeDashoffset: [60, -180] } : {}}
+                        transition={(homeBoost && isActive && !shouldReduceAnimations) ? { duration: 6, repeat: Infinity, ease: "linear" } : {}}
                         opacity={homeBoost
                             ? (theme.mode === 'dark' ? 0.67 : 0.15)
                             : (theme.mode === 'dark' ? 0.36 : 0.0)}
@@ -292,8 +292,8 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                         strokeLinecap="butt"
                         strokeLinejoin="round"
                         strokeDasharray="28 92"
-                        animate={(homeBoost && isActive) ? { strokeDashoffset: [60, -180] } : {}}
-                        transition={(homeBoost && isActive) ? { duration: 6, repeat: Infinity, ease: "linear" } : {}}
+                        animate={(homeBoost && isActive && !shouldReduceAnimations) ? { strokeDashoffset: [60, -180] } : {}}
+                        transition={(homeBoost && isActive && !shouldReduceAnimations) ? { duration: 6, repeat: Infinity, ease: "linear" } : {}}
                         opacity={homeBoost
                             ? (theme.mode === 'dark' ? 0.15 : 0.61)
                             : (theme.mode === 'dark' ? 0.0 : 0.34)}
@@ -306,8 +306,8 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                         strokeLinecap="butt"
                         strokeLinejoin="round"
                         strokeDasharray="28 92"
-                        animate={(homeBoost && isActive) ? { strokeDashoffset: [0, -240] } : {}}
-                        transition={(homeBoost && isActive) ? { duration: 6, repeat: Infinity, ease: "linear" } : {}}
+                        animate={(homeBoost && isActive && !shouldReduceAnimations) ? { strokeDashoffset: [0, -240] } : {}}
+                        transition={(homeBoost && isActive && !shouldReduceAnimations) ? { duration: 6, repeat: Infinity, ease: "linear" } : {}}
                         opacity={homeBoost
                             ? (theme.mode === 'dark' ? 0.87 : 0.87)
                             : (theme.mode === 'dark' ? 0.55 : 0.62)}
@@ -339,11 +339,11 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                 }}>
                     {/* Core Radial Glow */}
                     <motion.div
-                        animate={(homeBoost && isActive) ? {
+                        animate={(homeBoost && isActive && !shouldReduceAnimations) ? {
                             scale: [1, 1.2, 1],
                             opacity: [0.4, 0.7, 0.4]
                         } : {}}
-                        transition={(homeBoost && isActive) ? { duration: 8, repeat: Infinity, ease: "easeInOut" } : {}}
+                        transition={(homeBoost && isActive && !shouldReduceAnimations) ? { duration: 8, repeat: Infinity, ease: "easeInOut" } : {}}
                         style={{
                             position: 'relative',
                             width: '70%',
@@ -375,8 +375,8 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                     return (
                         <motion.div
                             key={idx}
-                            animate={(homeBoost && isActive) ? { rotate: [initialRotation, initialRotation + 360] } : {}}
-                            transition={(homeBoost && isActive) ? {
+                            animate={(homeBoost && isActive && !shouldReduceAnimations) ? { rotate: [initialRotation, initialRotation + 360] } : {}}
+                            transition={(homeBoost && isActive && !shouldReduceAnimations) ? {
                                 duration: orbitSpeed,
                                 repeat: Infinity,
                                 ease: "linear"
@@ -391,11 +391,11 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                             }}
                         >
                             <motion.div
-                                animate={(homeBoost && isActive) ? {
+                                animate={(homeBoost && isActive && !shouldReduceAnimations) ? {
                                     rotate: [-(initialRotation), -(initialRotation + 360)], // Counter-rotate at matching speed
                                     scale: [1, 1.1, 1],
                                 } : {}}
-                                transition={(homeBoost && isActive) ? {
+                                transition={(homeBoost && isActive && !shouldReduceAnimations) ? {
                                     rotate: { duration: orbitSpeed, repeat: Infinity, ease: "linear" },
                                     scale: { duration: 4, repeat: Infinity, ease: "easeInOut" },
                                 } : {}}

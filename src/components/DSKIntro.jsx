@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
+import { shouldReduceAnimations } from '../hooks/useBreakpoint';
 
 const DSKIntro = ({ onComplete }) => {
     const { theme } = useTheme();
@@ -23,9 +24,10 @@ const DSKIntro = ({ onComplete }) => {
     }, [onComplete]);
 
     // Generate random triangles for EDGES (Top, Bottom, Left, Right corners)
+    // Use fewer particles on low-power/TV devices to prevent jank.
     const particles = useMemo(() => {
-        // Increased density to coverage top-mid and bottom-mid as well
-        return Array.from({ length: 120 }).map((_, i) => {
+        const count = shouldReduceAnimations ? 30 : 120;
+        return Array.from({ length: count }).map((_, i) => {
             // Distribute into 6 sectors to ensuring coverage
             // 0,1: Top Left / Top Right
             // 2,3: Bottom Left / Bottom Right
@@ -133,16 +135,16 @@ const DSKIntro = ({ onComplete }) => {
                 >
                     {/* Inner interactive triangle */}
                     <motion.div
-                        whileHover={{ 
+                        whileHover={shouldReduceAnimations ? undefined : { 
                             scale: 1.2, 
                             rotate: p.rotation + 45, 
                             zIndex: 10
                         }}
-                        animate={{
+                        animate={shouldReduceAnimations ? undefined : {
                             y: [0, -10, 0],
                             rotate: [0, 5, -5, 0]
                         }}
-                        transition={{
+                        transition={shouldReduceAnimations ? undefined : {
                             // Float animation
                             y: { duration: 3 + Math.random() * 2, repeat: Infinity, ease: "easeInOut" },
                             rotate: { duration: 4 + Math.random() * 3, repeat: Infinity, ease: "easeInOut" }

@@ -1,45 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Info, Download, CheckCircle } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import IndustrialBackground from './IndustrialBackground';
-import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
 // DevOps & Cloud Icons from multiple sets to ensure availability
 import { SiDocker, SiKubernetes, SiAnsible, SiJenkins, SiDatadog, SiAmazonwebservices, SiTerraform, SiGrafana, SiGithub } from 'react-icons/si';
 import { VscAzure, VscTerminal } from 'react-icons/vsc';
 
 // Gradient multi-color GCP-inspired cloud mark (approx)
-const GcpGradientIcon = ({ size = 24 }) => (
-    <svg
-        width={size}
-        height={size}
-        // Tighter viewBox so the mark fills the same visual area as react-icons at the same `size`.
-        viewBox="12 10 52 44"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-        focusable="false"
-        preserveAspectRatio="xMidYMid meet"
-    >
-        <defs>
-            <linearGradient id="gcpGrad" x1="10" y1="18" x2="54" y2="46" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stopColor="#4285F4" />
-                <stop offset="0.35" stopColor="#EA4335" />
-                <stop offset="0.7" stopColor="#FBBC05" />
-                <stop offset="1" stopColor="#34A853" />
-            </linearGradient>
-        </defs>
+// Uses useId() to generate a unique gradient ID per instance, preventing
+// SVG <defs> ID collisions when multiple instances exist in the DOM.
+const GcpGradientIcon = ({ size = 24 }) => {
+    const uid = useId();
+    const gradId = `gcpGrad-${uid.replace(/:/g, '')}`;
+    return (
+        <svg
+            width={size}
+            height={size}
+            viewBox="12 10 52 44"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            focusable="false"
+            preserveAspectRatio="xMidYMid meet"
+        >
+            <defs>
+                <linearGradient id={gradId} x1="10" y1="18" x2="54" y2="46" gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stopColor="#4285F4" />
+                    <stop offset="0.35" stopColor="#EA4335" />
+                    <stop offset="0.7" stopColor="#FBBC05" />
+                    <stop offset="1" stopColor="#34A853" />
+                </linearGradient>
+            </defs>
 
-        <path
-            d="M18 33C18 26 23.2 21 30 21C31.7 16.8 36 14 40.2 14C46.7 14 51.2 18.4 52.4 24.2C57.3 25.1 61 29.2 61 34.2C61 40.3 56.1 45 50 45H25.5C21.4 45 18 41.7 18 37.6C18 35 19.3 33 22 32"
-            stroke="url(#gcpGrad)"
-            strokeWidth={Math.max(3.6, size * 0.11)}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.95"
-        />
-    </svg>
-);
+            <path
+                d="M18 33C18 26 23.2 21 30 21C31.7 16.8 36 14 40.2 14C46.7 14 51.2 18.4 52.4 24.2C57.3 25.1 61 29.2 61 34.2C61 40.3 56.1 45 50 45H25.5C21.4 45 18 41.7 18 37.6C18 35 19.3 33 22 32"
+                stroke={`url(#${gradId})`}
+                strokeWidth={Math.max(3.6, size * 0.11)}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                opacity="0.95"
+            />
+        </svg>
+    );
+};
 
 /**
  * DevOpsAtom: Upgraded with 3D-simulated kinetic orbits.
@@ -83,6 +88,35 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
             direction: 1 // Clockwise
         }
     ];
+
+    // On low-power devices / TVs, skip all orbit animations and just show static icons
+    if (shouldReduceAnimations) {
+        return (
+            <div style={{
+                position: 'absolute',
+                left: desktopLeftOffset,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                width: '600px',
+                height: '600px',
+                zIndex: 1,
+                pointerEvents: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                opacity: 0.5
+            }}>
+                <div style={{
+                    width: '100px',
+                    height: '100px',
+                    background: 'radial-gradient(circle, #b9090b 0%, transparent 70%)',
+                    borderRadius: '50%',
+                    filter: 'blur(20px)',
+                    opacity: 0.6
+                }} />
+            </div>
+        );
+    }
 
     return (
         <div style={{

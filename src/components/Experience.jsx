@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
 import { motion } from 'framer-motion';
 import { Briefcase, Calendar, Building2, UserCircle, CheckCircle2 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
@@ -25,7 +25,7 @@ const Experience = ({ data }) => {
         return () => observer.disconnect();
     }, []);
 
-    const shouldLoop = isInView;
+    const shouldLoop = isInView && !shouldReduceAnimations;
 
     return (
         <section ref={sectionRef} id="experience" style={{ position: 'relative', overflow: 'hidden' }}>
@@ -71,8 +71,10 @@ const Experience = ({ data }) => {
                                 width: '100%' // Wide screen layout
                             }}
                         >
-                            {/* Per-company panel background: nucleus + rotating infinity (blurred) */}
-                            <div style={{
+                            {/* Per-company panel background: nucleus + rotating infinity (blurred)
+                                 Skipped on low-power devices — 6 simultaneous animated SVG paths
+                                 is too expensive for TV/low-core hardware. */}
+                            {!shouldReduceAnimations && <div style={{
                                 position: 'absolute',
                                 inset: 0,
                                 pointerEvents: 'none',
@@ -146,7 +148,7 @@ const Experience = ({ data }) => {
                                         opacity={theme.mode === 'dark' ? 0.58 : 0.52}
                                     />
                                 </svg>
-                            </div>
+                            </div>}
 
                             <div style={{ position: 'relative', zIndex: 1 }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '30px', marginBottom: '40px' }}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 
@@ -39,34 +39,36 @@ const PremiumEffects = () => {
                 }}
             />
 
-            {/* 2. Cinematic Grain Overlay - Tuned Up for Texture */}
-            <div
-                style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    pointerEvents: 'none',
-                    zIndex: 9998,
-                    // Increased opacity for more visible texture (Film Grain)
-                    opacity: isMobile ? 0.05 : (theme.mode === 'dark' ? 0.09 : 0.06),
-                    mixBlendMode: 'overlay',
-                }}
-            >
-                {/* SVG Noise Filter */}
-                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                    <filter id="noiseFilter">
-                        <feTurbulence
-                            type="fractalNoise"
-                            baseFrequency={isMobile ? "0.80" : "0.65"} // Lower frequency = larger grain chunks
-                            numOctaves={isMobile ? "2" : "4"} // More detail
-                            stitchTiles="stitch"
-                        />
-                    </filter>
-                    <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-                </svg>
-            </div>
+            {/* 2. Cinematic Grain Overlay
+                 Skipped entirely on low-power devices (TVs, low-core phones) because
+                 SVG feTurbulence is GPU-heavy and causes severe jank on weak hardware. */}
+            {!shouldReduceAnimations && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        pointerEvents: 'none',
+                        zIndex: 9998,
+                        opacity: isMobile ? 0.05 : (theme.mode === 'dark' ? 0.09 : 0.06),
+                        mixBlendMode: 'overlay',
+                    }}
+                >
+                    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                        <filter id="noiseFilter">
+                            <feTurbulence
+                                type="fractalNoise"
+                                baseFrequency={isMobile ? "0.80" : "0.65"}
+                                numOctaves={isMobile ? "2" : "4"}
+                                stitchTiles="stitch"
+                            />
+                        </filter>
+                        <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+                    </svg>
+                </div>
+            )}
 
             <style>{`
                 /* Ensure grain stays fixed and covers everything */

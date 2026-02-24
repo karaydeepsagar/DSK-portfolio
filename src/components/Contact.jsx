@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Linkedin, Github, Send, Copy, Check } from 'lucide-react';
 import emailjs from '@emailjs/browser';
@@ -30,7 +30,7 @@ const Contact = ({ data }) => {
         return () => observer.disconnect();
     }, []);
 
-    const shouldLoop = isInView;
+    const shouldLoop = isInView && !shouldReduceAnimations;
 
     const copyToClipboard = async (text, type) => {
         try {

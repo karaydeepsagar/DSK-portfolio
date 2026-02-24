@@ -9,6 +9,10 @@ const CustomCursor = () => {
     const [isHovering, setIsHovering] = useState(false);
     const [isClicking, setIsClicking] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
+    // Ref tracks visibility inside event-handler closures to avoid the stale-closure
+    // bug where isVisible is always `false` inside onMove, causing setIsVisible(true)
+    // to fire on every single mousemove event and trigger continuous re-renders.
+    const isVisibleRef = useRef(false);
 
     // Raw mouse position — dot follows this instantly
     const rawX = useMotionValue(-100);
@@ -26,7 +30,12 @@ const CustomCursor = () => {
         const onMove = (e) => {
             rawX.set(e.clientX);
             rawY.set(e.clientY);
-            if (!isVisible) setIsVisible(true);
+            // Use ref so we read current value without adding isVisible to deps,
+            // preventing this handler from being recreated on every render.
+            if (!isVisibleRef.current) {
+                isVisibleRef.current = true;
+                setIsVisible(true);
+            }
         };
 
         const onOver = (e) => {
@@ -38,8 +47,8 @@ const CustomCursor = () => {
 
         const onDown = () => setIsClicking(true);
         const onUp = () => setIsClicking(false);
-        const onLeave = () => setIsVisible(false);
-        const onEnter = () => setIsVisible(true);
+        const onLeave = () => { isVisibleRef.current = false; setIsVisible(false); };
+        const onEnter = () => { isVisibleRef.current = true; setIsVisible(true); };
 
         window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseover', onOver);
@@ -63,7 +72,8 @@ const CustomCursor = () => {
     // Don't render on touch devices
     if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return null;
 
-    const accent = theme.accent; // #D10000
+    const accent = theme.accent; // #D10000 — ring colour
+    const dotColor = theme.mode === 'dark' ? '#FFFFFF' : '#000000';
 
     return (
         <>
@@ -108,10 +118,10 @@ const CustomCursor = () => {
                     width: '6px',
                     height: '6px',
                     borderRadius: '50%',
-                    background: accent,
+                    background: dotColor,
                     opacity: isVisible ? (isHovering ? 0 : 1) : 0,
                     transition: 'opacity 0.2s ease',
-                    boxShadow: `0 0 8px ${accent}99`,
+                    boxShadow: `0 0 8px #ffffff99`,
                 }}
                 animate={{ scale: isClicking ? 0.6 : 1 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 20 }}
