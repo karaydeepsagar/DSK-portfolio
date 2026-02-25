@@ -72,13 +72,29 @@ const CustomCursor = () => {
     // Don't render on touch devices
     if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return null;
 
-    const accent = theme.accent;
-    const dotColor = theme.mode === 'dark' ? '#ffffff' : '#111111';
+    const accent = theme.accent; // #D10000
+    // Ring adapts to theme: crisp white on dark, charcoal on light — always legible
+    const ringColor = theme.mode === 'dark' ? 'rgba(255,255,255,0.55)' : 'rgba(30,30,30,0.45)';
+    const ringColorHover = accent;
 
     return (
         <>
-            {/* Ember glow — soft blurred red blob, trails with spring lag.
-                Looks like an ambient light source rather than a hard shape. */}
+            {/*
+             * PRECISION CROSSHAIR CURSOR
+             * ─────────────────────────────────────────────────────────────────
+             * Layer 1 — Adaptive ring (spring lag)
+             *   · 30px thin 1.5px ring, white/charcoal to match theme
+             *   · Hover: expands to 42px, turns accent-red
+             *   · Click: snaps inward (scale 0.7)
+             *   Works in both dark & light mode — no blur needed, pure GPU transform
+             *
+             * Layer 2 — Red dot (instant, exact position)
+             *   · Solid 5px accent-red circle — always on top
+             *   · Click: snaps to 3px
+             * ─────────────────────────────────────────────────────────────────
+             */}
+
+            {/* Layer 1: Adaptive ring — spring follower */}
             <motion.div
                 style={{
                     position: 'fixed',
@@ -90,20 +106,25 @@ const CustomCursor = () => {
                     translateY: '-50%',
                     pointerEvents: 'none',
                     zIndex: 99998,
-                    width: isHovering ? '60px' : '40px',
-                    height: isHovering ? '60px' : '40px',
+                    width: isHovering ? '42px' : '30px',
+                    height: isHovering ? '42px' : '30px',
                     borderRadius: '50%',
-                    background: accent,
-                    opacity: isVisible ? (isHovering ? 0.28 : 0.18) : 0,
-                    filter: 'blur(14px)',
-                    transition: 'width 0.3s ease, height 0.3s ease, opacity 0.3s ease',
+                    border: `1.5px solid ${isHovering ? ringColorHover : ringColor}`,
+                    background: isHovering ? `${accent}15` : 'transparent',
+                    opacity: isVisible ? 1 : 0,
+                    transition:
+                        'width 0.22s cubic-bezier(0.34,1.56,0.64,1), ' +
+                        'height 0.22s cubic-bezier(0.34,1.56,0.64,1), ' +
+                        'border-color 0.2s ease, ' +
+                        'background 0.2s ease, ' +
+                        'opacity 0.25s ease',
                     willChange: 'transform',
                 }}
-                animate={{ scale: isClicking ? 0.65 : 1 }}
-                transition={{ type: 'spring', stiffness: 350, damping: 22 }}
+                animate={{ scale: isClicking ? 0.7 : 1 }}
+                transition={{ type: 'spring', stiffness: 450, damping: 24 }}
             />
 
-            {/* Sharp dot — exact cursor position, zero lag, always crisp */}
+            {/* Layer 2: Accent dot — exact, zero-lag, always on top */}
             <motion.div
                 style={{
                     position: 'fixed',
@@ -118,13 +139,13 @@ const CustomCursor = () => {
                     width: '5px',
                     height: '5px',
                     borderRadius: '50%',
-                    background: dotColor,
+                    background: accent,
                     opacity: isVisible ? 1 : 0,
                     transition: 'opacity 0.2s ease',
                     willChange: 'transform',
                 }}
                 animate={{ scale: isClicking ? 0.5 : 1 }}
-                transition={{ type: 'spring', stiffness: 600, damping: 28 }}
+                transition={{ type: 'spring', stiffness: 700, damping: 30 }}
             />
         </>
     );
