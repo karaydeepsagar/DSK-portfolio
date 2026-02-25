@@ -80,11 +80,11 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
             speed: 45,
             tools: [
                 { Icon: VscAzure, color: '#0078D4' },
+                { Icon: SiDatadog, color: '#b602ce' },
                 { Icon: SiAmazonwebservices, color: '#FF9900' },
                 { Icon: GcpGradientIcon, color: '#4285F4' },
                 { Icon: SiGithub, color: theme.mode === 'dark' ? '#FFFFFF' : '#1A1A1A' },
-                { Icon: SiTerraform, color: '#7B42BC' },
-                { Icon: SiDatadog, color: '#632CA6' }
+                { Icon: SiTerraform, color: '#7B42BC' }
             ],
             direction: 1 // Clockwise
         }
