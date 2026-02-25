@@ -77,7 +77,7 @@ const CustomCursor = () => {
 
     return (
         <>
-            {/* Outer ring — laggy spring follower */}
+            {/* Outer dot — light transparent red, laggy spring follower */}
             <motion.div
                 style={{
                     position: 'fixed',
@@ -89,17 +89,15 @@ const CustomCursor = () => {
                     translateY: '-50%',
                     pointerEvents: 'none',
                     zIndex: 99999,
-                    width: isHovering ? '46px' : '32px',
-                    height: isHovering ? '46px' : '32px',
+                    width: isHovering ? '36px' : '22px',
+                    height: isHovering ? '36px' : '22px',
                     borderRadius: '50%',
-                    border: `1.5px solid ${accent}`,
-                    background: isHovering ? `${accent}18` : 'transparent',
+                    background: isHovering ? `${accent}30` : `${accent}22`,
+                    border: 'none',
                     opacity: isVisible ? 1 : 0,
                     transition: 'width 0.25s ease, height 0.25s ease, background 0.25s ease, opacity 0.3s ease',
-                    mixBlendMode: theme.mode === 'dark' ? 'normal' : 'multiply',
-                    scale: isClicking ? 0.82 : 1,
                 }}
-                animate={{ scale: isClicking ? 0.82 : 1 }}
+                animate={{ scale: isClicking ? 0.75 : 1 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 20 }}
             />
 
