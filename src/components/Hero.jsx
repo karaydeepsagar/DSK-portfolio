@@ -1,53 +1,46 @@
-import React, { useState, useEffect, useId } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Info, Download, CheckCircle } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import IndustrialBackground from './IndustrialBackground';
 import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
 // DevOps & Cloud Icons from multiple sets to ensure availability
-import { SiDocker, SiKubernetes, SiAnsible, SiJenkins, SiDatadog, SiAmazonwebservices, SiTerraform, SiGrafana, SiGithub } from 'react-icons/si';
+import { SiDocker, SiKubernetes, SiAnsible, SiJenkins, SiDatadog, SiTerraform, SiGrafana, SiGithub } from 'react-icons/si';
 import { VscAzure, VscTerminal } from 'react-icons/vsc';
 
-// Gradient multi-color GCP-inspired cloud mark (approx)
-// Uses useId() to generate a unique gradient ID per instance, preventing
-// SVG <defs> ID collisions when multiple instances exist in the DOM.
-const GcpGradientIcon = ({ size = 24 }) => {
-    const uid = useId();
-    const gradId = `gcpGrad-${uid.replace(/:/g, '')}`;
-    return (
-        <svg
-            width={size}
-            height={size}
-            viewBox="12 10 52 44"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-            focusable="false"
-            preserveAspectRatio="xMidYMid meet"
-        >
-            <defs>
-                <linearGradient id={gradId} x1="10" y1="18" x2="54" y2="46" gradientUnits="userSpaceOnUse">
-                    <stop offset="0" stopColor="#4285F4" />
-                    <stop offset="0.35" stopColor="#EA4335" />
-                    <stop offset="0.7" stopColor="#FBBC05" />
-                    <stop offset="1" stopColor="#34A853" />
-                </linearGradient>
-            </defs>
+// Official GCP icon (4-colour logo)
+const GcpGradientIcon = ({ size = 24 }) => (
+    <svg width={size} height={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" aria-hidden="true">
+        <path fill="#ea4535" d="M80.6 40.3h.4l-.2-.2 14-14v-.3c-11.8-10.4-28.1-14-43.2-9.5C36.5 20.8 24.9 32.8 20.7 48c.2-.1.5-.2.8-.2 5.2-3.4 11.4-5.4 17.9-5.4 2.2 0 4.3.2 6.4.6.1-.1.2-.1.3-.1 9-9.9 24.2-11.1 34.6-2.6h-.1z"/>
+        <path fill="#557ebf" d="M108.1 47.8c-2.3-8.5-7.1-16.2-13.8-22.1L80 39.9c6 4.9 9.5 12.3 9.3 20v2.5c16.9 0 16.9 25.2 0 25.2H63.9v20h-.1l.1.2h25.4c14.6.1 27.5-9.3 31.8-23.1 4.3-13.8-1-28.8-13-36.9z"/>
+        <path fill="#36a852" d="M39 107.9h26.3V87.7H39c-1.9 0-3.7-.4-5.4-1.1l-15.2 14.6v.2c6 4.3 13.2 6.6 20.7 6.6z"/>
+        <path fill="#f9bc15" d="M40.2 41.9c-14.9.1-28.1 9.3-32.9 22.8-4.8 13.6 0 28.5 11.8 37.3l15.6-14.9c-8.6-3.7-10.6-14.5-4-20.8 6.6-6.4 17.8-4.4 21.7 3.8L68 55.2C61.4 46.9 51.1 42 40.2 42.1z"/>
+    </svg>
+);
 
-            <path
-                d="M18 33C18 26 23.2 21 30 21C31.7 16.8 36 14 40.2 14C46.7 14 51.2 18.4 52.4 24.2C57.3 25.1 61 29.2 61 34.2C61 40.3 56.1 45 50 45H25.5C21.4 45 18 41.7 18 37.6C18 35 19.3 33 22 32"
-                stroke={`url(#${gradId})`}
-                strokeWidth={Math.max(3.6, size * 0.11)}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                opacity="0.95"
-            />
+// Theme-aware AWS icon: letterforms adapt to dark/light, orange smile stays constant
+const AwsThemedIcon = ({ size = 24 }) => {
+    const { theme } = useTheme();
+    const textColor = theme.mode === 'dark' ? '#FFFFFF' : '#232F3E';
+    const sw = Math.max(2.4, size * 0.088);
+    return (
+        <svg width={size} height={size} viewBox="0 0 102 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            {/* A */}
+            <polyline points="5,44 15,10 25,44" stroke={textColor} strokeWidth={sw} strokeLinejoin="round" strokeLinecap="round"/>
+            <line x1="9" y1="31" x2="21" y2="31" stroke={textColor} strokeWidth={sw} strokeLinecap="round"/>
+            {/* W */}
+            <polyline points="29,10 35,44 42,27 49,44 55,10" stroke={textColor} strokeWidth={sw} strokeLinejoin="round" strokeLinecap="round"/>
+            {/* S */}
+            <path d="M72,17 C72,11 61,10 59,17 C57,22 64,25 68,27 C73,30 75,36 71,40 C68,44 59,44 57,39"
+                stroke={textColor} strokeWidth={sw} strokeLinecap="round" fill="none"/>
+            {/* Orange smile arrow — always #FF9900 */}
+            <path d="M8,55 C30,65 72,65 94,55" stroke="#FF9900" strokeWidth={sw * 1.15} strokeLinecap="round" fill="none"/>
+            <polyline points="89,50 94,55 89,60" stroke="#FF9900" strokeWidth={sw * 1.15} strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
     );
 };
 
 /**
- * DevOpsAtom: Upgraded with 3D-simulated kinetic orbits.
  * Ensures consistent spacing between icons and maintains upright orientation.
  */
 const DevOpsAtom = ({ theme, isActive = true }) => {
@@ -59,8 +52,8 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
             radius: 120,
             speed: 25,
             tools: [
-                { Icon: SiDocker, color: '#2496ED' },
-                { Icon: SiKubernetes, color: '#326CE5' },
+                { Icon: SiDocker, color: '#61b1ed' },
+                { Icon: SiKubernetes, color: '#1b53cc' },
                 { Icon: SiAnsible, color: '#D10000' }
             ],
             direction: 1 // Clockwise
@@ -69,9 +62,9 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
             radius: 200,
             speed: 35,
             tools: [
-                { Icon: SiJenkins, color: theme.mode === 'dark' ? '#FFFFFF' : '#4A4A4A' },
-                { Icon: SiGrafana, color: '#F05A28' },
-                { Icon: VscTerminal, color: '#4AF626' }
+                { Icon: SiGrafana, color: '#fd5234' },
+                { Icon: VscTerminal, color: '#4AF626' },
+                { Icon: SiDatadog, color: '#632CA6' }
             ],
             direction: -1 // Counter-clockwise
         },
@@ -79,9 +72,8 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
             radius: 280,
             speed: 45,
             tools: [
-                
-                { Icon: SiDatadog, color: '#b602ce' },
-                { Icon: SiAmazonwebservices, color: '#FF9900' },
+                { Icon: SiJenkins, color: theme.mode === 'dark' ? '#FFFFFF' : '#4A4A4A' },
+                { Icon: AwsThemedIcon, color: '#FF9900' },
                 { Icon: VscAzure, color: '#0078D4' },
                 { Icon: GcpGradientIcon, color: '#4285F4' },
                 { Icon: SiGithub, color: theme.mode === 'dark' ? '#FFFFFF' : '#1A1A1A' },

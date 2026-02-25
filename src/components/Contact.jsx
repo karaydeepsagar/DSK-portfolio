@@ -51,6 +51,13 @@ const Contact = ({ data }) => {
         const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
         const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
+        if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+            setStatus({ sending: false, sent: false, error: true });
+            console.error('EmailJS credentials are not configured. Add VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, and VITE_EMAILJS_PUBLIC_KEY to your .env file.');
+            setTimeout(() => setStatus(s => ({ ...s, error: false })), 5000);
+            return;
+        }
+
         emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY)
             .then((result) => {
                 console.log(result.text);

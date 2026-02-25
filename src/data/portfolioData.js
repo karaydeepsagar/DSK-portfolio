@@ -11,18 +11,18 @@ export const portfolioData = {
     },
     skills: {
         Cloud: ["AWS", "Azure", "GCP"],
-        Scripting: ["(BASH) Shell Scripting"],
-        OS: ["Red Hat", "Ubuntu", "CentOS", "Window Server 2019", "Mac OS"],
+        Scripting: ["(BASH) Shell Scripting", "Python"],
+        OS: ["Red Hat", "Ubuntu", "CentOS", "Windows Server 2019", "Mac OS"],
         "CI/CD": ["Jenkins", "Gitlab", "GitHub", "Bitbucket"],
         "Infrastructure as Code": ["Ansible", "Terraform", "Cloud Formation (AWS)", "ARM Azure"],
         Containerization: ["Docker", "Kubernetes", "Packer"],
         Monitoring: ["AWS CloudWatch", "Prometheus & Grafana", "ELK Stack", "Datadog"],
-        "AI Tools": ["AntiGravity", "Claude AI", "ChatGPT", "Gemini", "OpenClaw"]
+        "AI Tools": ["GitHub Copilot", "Claude AI", "ChatGPT", "Anti-Gravity", "Perplexity"]
     },
     certifications: [
         {
             name: "AWS Solution Architect Associate",
-            code: "SSA-CO3",
+            code: "SAA-C03",
             issuer: "Amazon Web Services"
         },
         {
