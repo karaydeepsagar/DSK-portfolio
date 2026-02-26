@@ -3,6 +3,7 @@ import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, ArrowRight, BookOpen } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import SpotlightCard from './SpotlightCard';
 
 const Blog = ({ data }) => {
     const { theme } = useTheme();
@@ -76,17 +77,17 @@ const Blog = ({ data }) => {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                             whileHover={{ y: -10 }}
-                            style={{
-                                background: theme.cardBg,
-                                backdropFilter: 'blur(20px)',
-                                borderRadius: '24px',
-                                overflow: 'hidden',
-                                border: `1px solid ${theme.border}`,
+                            style={{ height: '100%' }}
+                        >
+                            <SpotlightCard style={{
+                                height: '100%',
                                 display: 'flex',
                                 flexDirection: 'column',
+                                borderRadius: '24px',
+                                overflow: 'hidden',
+                                background: theme.cardBg,
                                 boxShadow: theme.cardShadow
-                            }}
-                        >
+                            }}>
                             <div style={{ height: '240px', overflow: 'hidden', position: 'relative' }}>
                                 <img
                                     src={post.image}
@@ -136,6 +137,7 @@ const Blog = ({ data }) => {
                                     Read Article <ArrowRight size={18} />
                                 </a>
                             </div>
+                            </SpotlightCard>
                         </motion.article>
                     ))}
                 </div>

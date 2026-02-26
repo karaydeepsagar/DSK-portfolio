@@ -77,6 +77,7 @@ const Projects = ({ data }) => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1, duration: 0.5 }}
+                            whileHover={{ y: -10 }}
                             style={{ height: '100%' }}
                         >
                             <SpotlightCard
