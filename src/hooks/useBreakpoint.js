@@ -46,10 +46,6 @@ const _onResize = () => {
     _subscribers.forEach((fn) => fn(_currentBp));
 };
 
-if (typeof window !== 'undefined') {
-    window.addEventListener('resize', _onResize, { passive: true });
-}
-
 /**
  * Shared breakpoint hook.
  *
@@ -64,11 +60,21 @@ export const useBreakpoint = () => {
     const [bp, setBp] = useState(() => _currentBp);
 
     useEffect(() => {
+        // FIX: Add listener only when first subscriber joins, to avoid module-level leaks
+        if (_subscribers.size === 0 && typeof window !== 'undefined') {
+            window.addEventListener('resize', _onResize, { passive: true });
+        }
+
         // Sync in case value changed between SSR and mount
         setBp(_currentBp);
         _subscribers.add(setBp);
+
         return () => {
             _subscribers.delete(setBp);
+            // FIX: Clean up listener when last subscriber leaves
+            if (_subscribers.size === 0 && typeof window !== 'undefined') {
+                window.removeEventListener('resize', _onResize);
+            }
         };
     }, []);
 

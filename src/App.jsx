@@ -6,6 +6,7 @@ import DSKIntro from './components/DSKIntro';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import PremiumEffects from './components/PremiumEffects';
+import SpaceAtmosphere from './components/SpaceAtmosphere';
 import CustomCursor from './components/CustomCursor';
 import { portfolioData } from './data/portfolioData';
 
@@ -24,26 +25,31 @@ const AppContent = () => {
     const { theme } = useTheme();
 
     return (
-        <div className="App" style={{ backgroundColor: theme.primaryBg, minHeight: '100vh', transition: 'background-color 0.4s ease' }}>
+        <div className="App" style={{ 
+            backgroundColor: theme.mode === 'dark' ? 'transparent' : theme.primaryBg, 
+            minHeight: '100vh', 
+            transition: 'background-color 0.4s ease' 
+        }}>
+            <SpaceAtmosphere />
             <CustomCursor />
             <PremiumEffects />
             <Navbar />
             <Hero data={portfolioData.personalInfo} />
 
             <Suspense fallback={<SectionPlaceholder />}>
-                <Projects data={portfolioData.projects} />
+                <Skills data={portfolioData.skills} />
             </Suspense>
             <Suspense fallback={<SectionPlaceholder />}>
                 <Experience data={portfolioData.experience} />
             </Suspense>
             <Suspense fallback={<SectionPlaceholder />}>
-                <Skills data={portfolioData.skills} />
-            </Suspense>
-            <Suspense fallback={<SectionPlaceholder />}>
-                <Education data={portfolioData.education} />
+                <Projects data={portfolioData.projects} />
             </Suspense>
             <Suspense fallback={<SectionPlaceholder />}>
                 <Blog data={portfolioData.blogs} />
+            </Suspense>
+            <Suspense fallback={<SectionPlaceholder />}>
+                <Education data={portfolioData.education} />
             </Suspense>
             <Suspense fallback={<SectionPlaceholder />}>
                 <Contact data={portfolioData.personalInfo} />

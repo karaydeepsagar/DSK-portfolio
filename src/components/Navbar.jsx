@@ -24,7 +24,7 @@ const Navbar = () => {
     });
 
     useEffect(() => {
-        const sections = ['home', 'projects', 'experience', 'skills', 'education', 'blog', 'contact'];
+        const sections = ['home', 'skills', 'experience', 'projects', 'blog', 'education', 'contact'];
 
         const updateOnScroll = () => {
             rafIdRef.current = null;
@@ -61,11 +61,11 @@ const Navbar = () => {
 
     const navLinks = [
         { name: 'Home', id: 'home' },
-        { name: 'Projects', id: 'projects' },
-        { name: 'Experience', id: 'experience' },
         { name: 'Skills', id: 'skills' },
-        { name: 'Education', id: 'education' },
+        { name: 'Experience', id: 'experience' },
+        { name: 'Projects', id: 'projects' },
         { name: 'Blog', id: 'blog' },
+        { name: 'Education', id: 'education' },
         { name: 'Contact', id: 'contact' },
     ];
 
@@ -91,13 +91,11 @@ const Navbar = () => {
                 top: scrolled ? '8px' : '15px', // Reduced top spacing
                 left: '50%',                   // Always center aligned
                 transform: 'translateX(-50%)', // Centering technique
-                width: '90%',                  // Always reduced width
-                maxWidth: '1200px',            // Reduced max-width for better compactness
-                right: 'auto',                 // Reset right property
-                margin: '0',                   // Reset auto margin since we use translate
+                width: 'fit-content',
+                maxWidth: '95vw',
+                margin: '0',
+                padding: '8px 32px',
                 zIndex: 1000,
-                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                // Scrolled: Blur + Semi-transparent BG
                 // Frosted Glass Effect: Lower opacity + High Blur
                 backgroundColor: scrolled || mobileMenuOpen ? (theme.mode === 'dark' ? 'rgba(20, 20, 20, 0.4)' : 'rgba(255, 255, 255, 0.4)') : 'transparent',
                 backdropFilter: scrolled || mobileMenuOpen ? 'blur(16px) saturate(180%)' : 'none',
@@ -108,7 +106,7 @@ const Navbar = () => {
                 boxShadow: scrolled ? '0 10px 30px rgba(0,0,0,0.1)' : 'none'
             }}
         >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', margin: '0' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', margin: '0', gap: 'clamp(20px, 5vw, 60px)' }}>
                 <motion.div
                     onClick={() => scrollToSection('home')}
                     whileHover={{ scale: 1.05 }}
@@ -132,7 +130,7 @@ const Navbar = () => {
                     </svg>
                     <h1 style={{
                         color: theme.accent,
-                        fontSize: 'clamp(1.2rem, 3vw, 1.5rem)', // Reduced font size
+                        fontSize: 'clamp(1.2rem, 3vw, 1.5rem)',
                         fontWeight: '900',
                         letterSpacing: '1px',
                         margin: 0

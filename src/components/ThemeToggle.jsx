@@ -15,15 +15,15 @@ const ThemeToggle = () => {
                 width: '40px', // Reduced 50 -> 40
                 height: '40px', // Reduced 50 -> 40
                 borderRadius: '50%',
-                border: `1px solid ${theme.border}`,
-                background: theme.glassBg,
-                backdropFilter: theme.navBlur,
+                background: 'transparent',
+                border: 'none',
+                boxShadow: 'none',
+                backdropFilter: 'none',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                overflow: 'hidden',
-                boxShadow: theme.cardShadow
+                overflow: 'hidden'
             }}
             aria-label="Toggle theme"
         >

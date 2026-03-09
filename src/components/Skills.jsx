@@ -158,10 +158,10 @@ const Skills = ({ data }) => {
     };
 
     return (
-        <section id="skills" style={{ position: 'relative', overflow: 'hidden' }}>
+        <section id="skills" style={{ position: 'relative', overflow: 'hidden', backgroundColor: theme.mode === 'dark' ? 'transparent' : theme.primaryBg }}>
             <div className="section-padding" style={{ padding: isMobile ? '100px 15px 40px' : '100px 4% 80px', background: 'transparent' }}>
                 <div style={{ textAlign: 'center', marginBottom: isMobile ? '40px' : '60px' }}>
-                    <h2 className="section-title" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', color: theme.primaryText, marginBottom: '16px' }}>
+                    <h2 className="section-title" style={{ fontSize: 'clamp(1.9rem, 3.8vw, 2.8rem)', fontWeight: '800', color: theme.primaryText, marginBottom: '16px' }}>
                         <span style={{ color: theme.accent }}>Technical</span> Expertise
                     </h2>
                     <p style={{ color: theme.mutedText, fontSize: '1.2rem', maxWidth: isMobile ? '700px' : '100%', margin: '0 auto', whiteSpace: isMobile ? 'normal' : 'nowrap' }}>

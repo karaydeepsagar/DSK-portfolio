@@ -28,7 +28,7 @@ const Experience = ({ data }) => {
     const shouldLoop = isInView && !shouldReduceAnimations;
 
     return (
-        <section ref={sectionRef} id="experience" style={{ position: 'relative', overflow: 'hidden' }}>
+        <section ref={sectionRef} id="experience" style={{ position: 'relative', overflow: 'hidden', backgroundColor: theme.mode === 'dark' ? 'transparent' : theme.primaryBg }}>
             <div className="section-padding" style={{
                 padding: isMobile ? '100px 15px 40px' : '120px 6% 80px',
                 background: 'transparent',
@@ -41,7 +41,7 @@ const Experience = ({ data }) => {
                     viewport={{ once: true }}
                     style={{ textAlign: 'center', marginBottom: '80px' }}
                 >
-                    <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', marginBottom: '20px', color: theme.primaryText }}>
+                    <h2 style={{ fontSize: 'clamp(1.9rem, 3.8vw, 2.8rem)', fontWeight: '800', marginBottom: '20px', color: theme.primaryText }}>
                         Professional <span style={{ color: theme.accent }}>Journey</span>
                     </h2>
                     <p style={{ color: theme.mutedText, fontSize: '1.2rem', maxWidth: isMobile ? '700px' : '100%', margin: '0 auto', whiteSpace: isMobile ? 'normal' : 'nowrap' }}>
@@ -51,8 +51,9 @@ const Experience = ({ data }) => {
 
                 <div className="experience-list" style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '40px' }}>
                     {data.map((job, index) => (
+                        // Key uses company+period compound to avoid index-based reconciliation bugs
                         <motion.div
-                            key={index}
+                            key={`${job.company}-${job.period}`}
                             initial={{ opacity: 0, x: -50 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
@@ -153,7 +154,7 @@ const Experience = ({ data }) => {
                             <div style={{ position: 'relative', zIndex: 1 }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '30px', marginBottom: '40px' }}>
                                     <div style={{ flex: '1', minWidth: '300px' }}>
-                                        <h3 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: '900', color: theme.primaryText, lineHeight: '1.1', marginBottom: '10px' }}>{job.company}</h3>
+                                        <h3 style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)', fontWeight: '900', color: theme.primaryText, lineHeight: '1.1', marginBottom: '10px' }}>{job.company}</h3>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: theme.secondaryText, fontSize: '1.2rem' }}>
                                             <Building2 size={20} style={{ color: theme.accent }} />
                                             <span style={{ fontWeight: '600' }}>{job.role}</span>

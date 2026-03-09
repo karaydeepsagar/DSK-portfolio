@@ -89,7 +89,9 @@ export const ThemeProvider = ({ children }) => {
     // Check system preference first, then localStorage
     const getInitialTheme = () => {
         const savedTheme = localStorage.getItem('portfolio-theme');
-        if (savedTheme) return savedTheme;
+        // FIX: Validate the stored value — corrupted/unknown keys would crash themes[currentTheme]
+        const VALID_THEMES = ['dark', 'light'];
+        if (savedTheme && VALID_THEMES.includes(savedTheme)) return savedTheme;
 
         // Check system preference
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {

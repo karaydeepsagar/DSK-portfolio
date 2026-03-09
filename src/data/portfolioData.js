@@ -1,13 +1,13 @@
 export const portfolioData = {
     personalInfo: {
         name: "Deep Sagar Karay",
-        role: "Cloud | DevOps Engineer",
+        role: "Cloud Architect | DevOps Engineer",
         email: "karaydeepsagar@gmail.com",
         phone: "+91 8522011851",
-        linkedin: "linkedin.com/in/karaydeepsagar",
-        "location Availability": "Bengaluru, Hyderabad, Chennai (Open to Relocation)",
+        linkedin: "https://www.linkedin.com/in/karaydeepsagar/",
+        locationAvailability: "Bengaluru, Hyderabad, Chennai (Open to Relocation)",
         languages: ["English", "Hindi", "Telugu"],
-        summary: "Architecting the future of Cloud Infrastructure through expert design of resilient multi-cloud ecosystems across AWS, Azure, and GCP. Specialist in advanced CI/CD Automation, Kubernetes Orchestration, and the strategic integration of diverse DevOps tools to streamline project deliverables. Proven leader in designing zero-trust scalable systems that bridge the gap between high-velocity development and robust operational stability."
+        summary: "5+ years architecting resilient multi-cloud ecosystems on AWS, Azure, and GCP. Expert in CI/CD automation, Kubernetes orchestration, Terraform and infrastructure-as-code. Specialist in DevSecOps practices and security architecture. Enabling high-velocity engineering teams with world-class operational systems."
     },
     skills: {
         Cloud: ["AWS", "Azure", "GCP"],

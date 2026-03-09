@@ -30,6 +30,12 @@ const CustomCursor = () => {
     useEffect(() => {
         let rafId;
         const tick = () => {
+            // FIX: Stop the RAF loop if the cursor is not visible to save CPU cycles
+            if (!isVisibleRef.current) {
+                rafId = null;
+                return;
+            }
+
             rafId = requestAnimationFrame(tick);
             if (!dotRef.current) return;
             const cx = rawX.get(), cy = rawY.get();
@@ -50,10 +56,17 @@ const CustomCursor = () => {
             dotRef.current.style.transform =
                 `translate(-50%,-50%) rotate(${angle}deg) scaleX(${stretch * s}) scaleY(${squeeze * s})`;
         };
-        tick();
-        return () => cancelAnimationFrame(rafId);
+
+        // Re-start RAF on visibility/clicking changes
+        if (isVisible) {
+            tick();
+        }
+
+        return () => {
+            if (rafId) cancelAnimationFrame(rafId);
+        };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isClicking]);
+    }, [isClicking, isVisible]);
 
     // ── Mouse event listeners ────────────────────────────────────────
     useEffect(() => {

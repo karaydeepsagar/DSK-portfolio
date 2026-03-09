@@ -24,7 +24,7 @@ const Projects = ({ data }) => {
     }, []);
 
     return (
-        <section ref={sectionRef} id="projects" style={{ position: 'relative', overflow: 'hidden' }}>
+        <section ref={sectionRef} id="projects" style={{ position: 'relative', overflow: 'hidden', backgroundColor: theme.mode === 'dark' ? 'transparent' : theme.primaryBg }}>
             {/* Nucleus glow (background) sized for this panel (RIGHT) */}
             <motion.div
                 animate={(isInView && !shouldReduceAnimations) ? { opacity: [0.10, 0.18, 0.10], scale: [1, 1.08, 1] } : false}
@@ -55,7 +55,7 @@ const Projects = ({ data }) => {
                     transition={{ duration: 0.6 }}
                     style={{ marginBottom: '60px', textAlign: 'center' }}
                 >
-                    <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', marginBottom: '20px' }}>
+                    <h2 style={{ fontSize: 'clamp(1.9rem, 3.8vw, 2.8rem)', fontWeight: '800', marginBottom: '20px' }}>
                         <span style={{ color: theme.accent }}>Featured</span> <span style={{ color: theme.primaryText }}>Projects</span>
                     </h2>
                     <p style={{ color: theme.mutedText, fontSize: '1.2rem', maxWidth: '700px', margin: '0 auto' }}>

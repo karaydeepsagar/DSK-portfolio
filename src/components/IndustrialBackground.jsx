@@ -351,9 +351,9 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                             background: 'radial-gradient(circle, var(--netflix-red) 0%, transparent 75%)',
                             borderRadius: '50%',
                             filter: isMobile
-                                ? 'blur(40px)' // Light blur for mobile
-                                : (theme.mode === 'dark' ? 'blur(100px)' : 'blur(80px)'),
-                            opacity: theme.mode === 'dark' ? 1 : 0.5,
+                                ? 'blur(40px)' 
+                                : (theme.mode === 'dark' ? 'blur(120px)' : 'blur(80px)'),
+                            opacity: theme.mode === 'dark' ? 0.35 : 0.5,
                             zIndex: -1
                         }}
                     />

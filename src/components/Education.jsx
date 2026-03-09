@@ -29,7 +29,7 @@ const Education = ({ data }) => {
     };
 
     return (
-        <section ref={sectionRef} id="education" style={{ position: 'relative', overflow: 'hidden' }}>
+        <section ref={sectionRef} id="education" style={{ position: 'relative', overflow: 'hidden', backgroundColor: theme.mode === 'dark' ? 'transparent' : theme.primaryBg }}>
             <div
                 className="section-padding"
                 style={{
@@ -47,7 +47,7 @@ const Education = ({ data }) => {
                 >
                     <h2
                         style={{
-                            fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+                            fontSize: 'clamp(1.9rem, 3.8vw, 2.8rem)',
                             fontWeight: '800',
                             marginBottom: '20px',
                             color: theme.primaryText
@@ -113,7 +113,8 @@ const Education = ({ data }) => {
                                                     padding: '3px 11px',
                                                     lineHeight: 1.6
                                                 }}>
-                                                    {labels[idx]}
+                                                    {/* FIX: Safe fallback if data has more entries than labels */}
+                                                    {labels[idx] ?? 'Education'}
                                                 </span>
                                                 <span style={{
                                                     display: 'inline-flex',

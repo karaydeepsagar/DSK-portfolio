@@ -30,7 +30,10 @@ class ErrorBoundary extends React.Component {
                 }}>
                     <h1 style={{ fontSize: '2rem', color: '#B22222' }}>Oops! Something went wrong</h1>
                     <p style={{ fontSize: '1rem', color: '#aaa', maxWidth: '600px', textAlign: 'center' }}>
-                        {this.state.error?.message || 'An unexpected error occurred'}
+                        {/* FIX: Don't expose raw error.message in production UI — it may leak
+                            internal paths, library versions, or stack hints to users.
+                            The full error is logged to the console for developers. */}
+                        An unexpected error occurred. Please try refreshing the page.
                     </p>
                     <button
                         onClick={() => window.location.reload()}

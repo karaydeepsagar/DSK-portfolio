@@ -217,7 +217,7 @@ const Hero = ({ data }) => {
             alignItems: 'center',
             justifyContent: 'center',
             overflow: 'hidden',
-            backgroundColor: theme.primaryBg,
+            backgroundColor: theme.mode === 'dark' ? 'transparent' : theme.primaryBg,
             paddingTop: isMobile ? '80px' : '0',
             transition: 'background-color 0.3s ease',
             contain: 'paint' // Optimize rendering boundaries
@@ -260,7 +260,7 @@ const Hero = ({ data }) => {
                     >
                         {/* Name Headline - Professional Center Alignment */}
                         <h1 style={{
-                            fontSize: 'clamp(2.35rem, 4.7vw, 3.95rem)', // Decreased by ~6%
+                            fontSize: 'clamp(2.1rem, 4vw, 3.2rem)', // Standardized smaller size
                             fontWeight: '900',
                             color: theme.accent,
                             lineHeight: '1.05',

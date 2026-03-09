@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
@@ -12,6 +12,8 @@ const PremiumEffects = () => {
     const { theme } = useTheme();
     const { scrollYProgress } = useScroll();
     const { isMobile } = useBreakpoint();
+    // FIX: Generate a unique ID per instance to prevent SVG filter collision in StrictMode
+    const noiseId = useId().replace(/:/g, '-');
 
     // Smooth out the scroll progress
     const scaleX = useSpring(scrollYProgress, {
@@ -59,7 +61,7 @@ const PremiumEffects = () => {
                     }}
                 >
                     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                        <filter id="noiseFilter">
+                        <filter id={noiseId}>
                             <feTurbulence
                                 type="fractalNoise"
                                 baseFrequency="0.65"
@@ -67,7 +69,7 @@ const PremiumEffects = () => {
                                 stitchTiles="stitch"
                             />
                         </filter>
-                        <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+                        <rect width="100%" height="100%" filter={`url(#${noiseId})`} />
                     </svg>
                 </div>
             )}

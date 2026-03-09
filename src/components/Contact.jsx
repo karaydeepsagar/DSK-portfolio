@@ -12,6 +12,7 @@ const Contact = ({ data }) => {
     const sectionRef = useRef(null);
     const [copied, setCopied] = useState(null);
     const [status, setStatus] = useState({ sending: false, sent: false, error: false });
+    const [copyError, setCopyError] = useState(false);
     const { isMobile } = useBreakpoint();
     const [formState, setFormState] = useState({ name: '', email: '', company: '' });
     const [isInView, setIsInView] = useState(true);
@@ -35,8 +36,8 @@ const Contact = ({ data }) => {
             setCopied(type);
             setTimeout(() => setCopied(null), 2000);
         } catch {
-            setStatus({ sending: false, sent: false, error: true });
-            setTimeout(() => setStatus(s => ({ ...s, error: false })), 5000);
+            setCopyError(true);
+            setTimeout(() => setCopyError(false), 3000);
         }
     };
 
@@ -56,14 +57,13 @@ const Contact = ({ data }) => {
         }
 
         emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY)
-            .then((result) => {
-                console.log(result.text);
+            .then(() => {
                 setStatus({ sending: false, sent: true, error: false });
                 setFormState({ name: '', email: '', company: '' });
                 form.current.reset();
                 setTimeout(() => setStatus(s => ({ ...s, sent: false })), 5000);
             }, (error) => {
-                console.log(error.text);
+                console.error('EmailJS error:', error.text);
                 setStatus({ sending: false, sent: false, error: true });
                 setTimeout(() => setStatus(s => ({ ...s, error: false })), 5000);
             });
@@ -72,7 +72,16 @@ const Contact = ({ data }) => {
     const isProjectDetailsEnabled = formState.name.trim().length > 0 && formState.email.trim().length > 0;
 
     return (
-        <section ref={sectionRef} id="contact" style={{ position: 'relative', overflow: 'hidden' }}>
+        <section ref={sectionRef} id="contact" style={{ position: 'relative', overflow: 'hidden', backgroundColor: theme.mode === 'dark' ? 'transparent' : theme.primaryBg }}>
+            {copyError && (
+                <div style={{
+                    position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
+                    background: '#ff5252', color: '#fff', padding: '10px 20px', borderRadius: '8px',
+                    zIndex: 9999, fontSize: '0.9rem', fontWeight: '600'
+                }}>
+                    Could not copy to clipboard
+                </div>
+            )}
             <style>{`
                 input::placeholder, textarea::placeholder { opacity: 0.7; }
                 input:focus::placeholder, textarea:focus::placeholder { opacity: 0; transition: opacity 0.2s ease; }
@@ -109,7 +118,7 @@ const Contact = ({ data }) => {
             }}>
                 {/* Heading */}
                 <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                    <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, color: theme.primaryText, marginBottom: '12px' }}>
+                    <h2 style={{ fontSize: 'clamp(1.9rem, 3.8vw, 2.8rem)', fontWeight: 800, color: theme.primaryText, marginBottom: '12px' }}>
                         <span>Let's</span> <span style={{ color: theme.accent }}>Collaborate</span>
                     </h2>
                     <div style={{
@@ -268,11 +277,6 @@ const Contact = ({ data }) => {
                             <p style={{ fontSize: '0.9rem', color: theme.mutedText, marginBottom: '1.5rem' }}>Fill in the details and I'll get back to you promptly.</p>
 
                             <form ref={form} onSubmit={sendEmail} style={{ display: 'flex', flexDirection: 'column', gap: '14px', flex: 1 }}>
-                                <input type="hidden" name="from_name" value={formState.name} />
-                                <input type="hidden" name="reply_to" value={formState.email} />
-                                <input type="hidden" name="from_email" value={formState.email} />
-                                <input type="hidden" name="company" value={formState.company} />
-
                                 <input type="text" name="user_name" placeholder="Your Name" required
                                     value={formState.name} onChange={(e) => setFormState(s => ({ ...s, name: e.target.value }))}
                                     style={{ width: '100%', padding: '14px 16px', background: theme.secondaryBg, border: `1px solid ${theme.border}`, borderRadius: '12px', color: theme.primaryText, outline: 'none', fontSize: '1rem', boxSizing: 'border-box' }} />

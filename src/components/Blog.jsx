@@ -24,7 +24,7 @@ const Blog = ({ data }) => {
     }, []);
 
     return (
-        <section ref={sectionRef} id="blog" style={{ position: 'relative', overflow: 'hidden' }}>
+        <section ref={sectionRef} id="blog" style={{ position: 'relative', overflow: 'hidden', backgroundColor: theme.mode === 'dark' ? 'transparent' : theme.primaryBg }}>
             {/* Nucleus glow (background) sized for this panel (LEFT) */}
             <motion.div
                 animate={(isInView && !shouldReduceAnimations) ? { opacity: [0.10, 0.18, 0.10], scale: [1, 1.08, 1] } : false}
@@ -54,7 +54,7 @@ const Blog = ({ data }) => {
                     viewport={{ once: true }}
                     style={{ textAlign: 'center', marginBottom: '80px' }}
                 >
-                    <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', marginBottom: '20px', color: theme.primaryText }}>
+                    <h2 style={{ fontSize: 'clamp(1.9rem, 3.8vw, 2.8rem)', fontWeight: '800', marginBottom: '20px', color: theme.primaryText }}>
                         <span style={{ color: theme.accent }}>Industrial</span> <span>Insights</span>
                     </h2>
                     <p style={{ color: theme.mutedText, fontSize: '1.2rem', maxWidth: isMobile ? '700px' : '100%', margin: '0 auto', whiteSpace: isMobile ? 'normal' : 'nowrap' }}>
@@ -93,8 +93,9 @@ const Blog = ({ data }) => {
                                     src={post.image}
                                     alt={post.title}
                                     style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s' }}
-                                    onMouseOver={(e) => e.target.style.transform = 'scale(1.1)'}
-                                    onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
+                                    // FIX: Use e.currentTarget not e.target — e.target can reference a child element
+                                    onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                                    onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
                                 />
                                 
                             </div>

@@ -7,7 +7,9 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+# FIX: Use 'npm ci' instead of 'npm install' for reproducible builds.
+# npm ci uses package-lock.json exactly and fails on version mismatch.
+RUN npm ci
 
 # Copy the rest of the application code
 COPY . .

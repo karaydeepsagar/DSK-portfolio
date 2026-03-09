@@ -106,7 +106,9 @@ const DSKIntro = ({ onComplete }) => {
                 rotateDuration
             };
         });
-    }, [theme, isMobile]);
+    // FIX: Depend only on primitive theme values (mode, accent) not the full theme object.
+    // The theme object is a new reference every render, making the memo useless.
+    }, [theme.mode, theme.accent, isMobile]);
 
     return (
         <motion.div
