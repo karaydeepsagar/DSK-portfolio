@@ -19,7 +19,7 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
     const scrollingRef = useRef(false);
     const scrollTimeoutRef = useRef(null);
 
-// While the user is actively scrolling, avoid expensive paint effects.
+    // While the user is actively scrolling, avoid expensive paint effects.
     useEffect(() => {
         const onScroll = () => {
             if (!scrollingRef.current) {
@@ -98,9 +98,9 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
     // Home right-side infinity should scale up gently on larger screens
     // Reduced by ~8% as requested
     const homeInfinityT = Math.max(0, Math.min(1, (viewportWidth - 1024) / (1600 - 1024)));
-    const homeInfinityWidthPx = Math.round(653 + (751 - 653) * homeInfinityT);
-    const homeInfinityHeightPx = Math.round(327 + (375 - 327) * homeInfinityT);
-    const homeInfinityScaleValue = 0.84 + (0.93 - 0.84) * homeInfinityT;
+    const homeInfinityWidthPx = Math.round(580 + (700 - 580) * homeInfinityT);
+    const homeInfinityHeightPx = Math.round(290 + (350 - 290) * homeInfinityT);
+    const homeInfinityScaleValue = 0.78 + (0.88 - 0.78) * homeInfinityT;
     // For Professional Journey: make ring + nucleus + infinity larger, but keep circulating icons the same size.
     const ringMaxSize = experienceBoost ? '900px' : '567px';
     const ringScale = experienceBoost ? 1.18 : 1;
@@ -258,61 +258,61 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                     zIndex: 0
                 }}
             >
-                    <motion.path
-                        d={infinityPath}
-                        fill="none"
-                        stroke={secondaryColor}
-                        strokeWidth="3"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        opacity={homeBoost
-                            ? (theme.mode === 'dark' ? 0.83 : 0.59)
-                            : (theme.mode === 'dark' ? 0.55 : 0.35)}
-                    />
-                    {/* Keep white + red dashes interleaved (no overlay) by locking phase offset */}
-                    <motion.path
-                        d={infinityPath}
-                        fill="none"
-                        stroke={theme.mode === 'dark' ? '#fff' : '#94a3b8'}
-                        strokeWidth={homeBoost ? '3.9' : '3.5'}
-                        strokeLinecap="butt"
-                        strokeLinejoin="round"
-                        strokeDasharray="28 92"
-                        animate={(homeBoost && isActive && !shouldReduceAnimations) ? { strokeDashoffset: [60, -180] } : {}}
-                        transition={(homeBoost && isActive && !shouldReduceAnimations) ? { duration: 6, repeat: Infinity, ease: "linear" } : {}}
-                        opacity={homeBoost
-                            ? (theme.mode === 'dark' ? 0.67 : 0.15)
-                            : (theme.mode === 'dark' ? 0.36 : 0.0)}
-                    />
-                    <motion.path
-                        d={infinityPath}
-                        fill="none"
-                        stroke={theme.mutedText}
-                        strokeWidth={homeBoost ? '3.9' : '3.5'}
-                        strokeLinecap="butt"
-                        strokeLinejoin="round"
-                        strokeDasharray="28 92"
-                        animate={(homeBoost && isActive && !shouldReduceAnimations) ? { strokeDashoffset: [60, -180] } : {}}
-                        transition={(homeBoost && isActive && !shouldReduceAnimations) ? { duration: 6, repeat: Infinity, ease: "linear" } : {}}
-                        opacity={homeBoost
-                            ? (theme.mode === 'dark' ? 0.15 : 0.61)
-                            : (theme.mode === 'dark' ? 0.0 : 0.34)}
-                    />
-                    <motion.path
-                        d={infinityPath}
-                        fill="none"
-                        stroke="var(--netflix-red)"
-                        strokeWidth={homeBoost ? '4.6' : '4'}
-                        strokeLinecap="butt"
-                        strokeLinejoin="round"
-                        strokeDasharray="28 92"
-                        animate={(homeBoost && isActive && !shouldReduceAnimations) ? { strokeDashoffset: [0, -240] } : {}}
-                        transition={(homeBoost && isActive && !shouldReduceAnimations) ? { duration: 6, repeat: Infinity, ease: "linear" } : {}}
-                        opacity={homeBoost
-                            ? (theme.mode === 'dark' ? 0.87 : 0.87)
-                            : (theme.mode === 'dark' ? 0.55 : 0.62)}
-                    />
-                </svg>
+                <motion.path
+                    d={infinityPath}
+                    fill="none"
+                    stroke={secondaryColor}
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    opacity={homeBoost
+                        ? (theme.mode === 'dark' ? 0.83 : 0.59)
+                        : (theme.mode === 'dark' ? 0.55 : 0.35)}
+                />
+                {/* Keep white + red dashes interleaved (no overlay) by locking phase offset */}
+                <motion.path
+                    d={infinityPath}
+                    fill="none"
+                    stroke={theme.mode === 'dark' ? '#fff' : '#94a3b8'}
+                    strokeWidth={homeBoost ? '3.9' : '3.5'}
+                    strokeLinecap="butt"
+                    strokeLinejoin="round"
+                    strokeDasharray="28 92"
+                    animate={(homeBoost && isActive && !shouldReduceAnimations) ? { strokeDashoffset: [60, -260] } : {}}
+                    transition={(homeBoost && isActive && !shouldReduceAnimations) ? { duration: 10, repeat: Infinity, ease: "linear" } : {}}
+                    opacity={homeBoost
+                        ? (theme.mode === 'dark' ? 0.67 : 0.15)
+                        : (theme.mode === 'dark' ? 0.36 : 0.0)}
+                />
+                <motion.path
+                    d={infinityPath}
+                    fill="none"
+                    stroke={theme.mutedText}
+                    strokeWidth={homeBoost ? '3.9' : '3.5'}
+                    strokeLinecap="butt"
+                    strokeLinejoin="round"
+                    strokeDasharray="28 92"
+                    animate={(homeBoost && isActive && !shouldReduceAnimations) ? { strokeDashoffset: [60, -260] } : {}}
+                    transition={(homeBoost && isActive && !shouldReduceAnimations) ? { duration: 10, repeat: Infinity, ease: "linear" } : {}}
+                    opacity={homeBoost
+                        ? (theme.mode === 'dark' ? 0.15 : 0.61)
+                        : (theme.mode === 'dark' ? 0.0 : 0.34)}
+                />
+                <motion.path
+                    d={infinityPath}
+                    fill="none"
+                    stroke="var(--netflix-red)"
+                    strokeWidth={homeBoost ? '4.6' : '4'}
+                    strokeLinecap="butt"
+                    strokeLinejoin="round"
+                    strokeDasharray="28 92"
+                    animate={(homeBoost && isActive && !shouldReduceAnimations) ? { strokeDashoffset: [0, -320] } : {}}
+                    transition={(homeBoost && isActive && !shouldReduceAnimations) ? { duration: 10, repeat: Infinity, ease: "linear" } : {}}
+                    opacity={homeBoost
+                        ? (theme.mode === 'dark' ? 0.87 : 0.87)
+                        : (theme.mode === 'dark' ? 0.55 : 0.62)}
+                />
+            </svg>
 
             {/* 1. Large Themed Animation Cluster (Right Aligned or Centered on Mobile) */}
             <div style={{
@@ -351,7 +351,7 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                             background: 'radial-gradient(circle, var(--netflix-red) 0%, transparent 75%)',
                             borderRadius: '50%',
                             filter: isMobile
-                                ? 'blur(40px)' 
+                                ? 'blur(40px)'
                                 : (theme.mode === 'dark' ? 'blur(120px)' : 'blur(80px)'),
                             opacity: theme.mode === 'dark' ? 0.35 : 0.5,
                             zIndex: -1
@@ -359,7 +359,7 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                     />
 
                     {/* Rotating Tech Ring - REMOVED as per request */}
-                    
+
                 </div>
 
                 {/* 2. Orbital Tech Icons (Rotating with Ring) */}
@@ -413,7 +413,7 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                                     willChange: 'transform'
                                 }}
                             >
-                                <Icon size={45} strokeWidth={1} /> {/* Reduced by 10% (from 50) */}
+                                <Icon size={40} strokeWidth={1} /> {/* Reduced by 10% (from 50) */}
 
                                 {/* Background Glow for the Icon itself */}
                                 <div style={{

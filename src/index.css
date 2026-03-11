@@ -1,14 +1,15 @@
 /* NOTE: Fonts are loaded via <link> in index.html — do NOT add @import here to avoid double-downloading. */
 
 html {
-  font-size: 85%;
+  font-size: 81%;
   /* Slightly scale down for laptops/desktops to fix oversized appearance */
-  background-color: #0a0a0c; /* Default dark fallback */
+  background-color: #0a0a0c;
+  /* Default dark fallback */
 }
 
 @media (max-width: 768px) {
   html {
-    font-size: 100%;
+    font-size: 90%;
     /* Keep mobile standard */
   }
 }
@@ -16,7 +17,8 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background-color: transparent !important; /* Allow canvas background */
+  background-color: transparent !important;
+  /* Allow canvas background */
 }
 
 :root {
