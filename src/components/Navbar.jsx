@@ -94,7 +94,6 @@ const Navbar = () => {
                 width: 'fit-content',
                 maxWidth: '95vw',
                 margin: '0',
-                padding: '8px 32px',
                 zIndex: 1000,
                 // Frosted Glass Effect: Lower opacity + High Blur
                 backgroundColor: scrolled || mobileMenuOpen ? (theme.mode === 'dark' ? 'rgba(20, 20, 20, 0.4)' : 'rgba(255, 255, 255, 0.4)') : 'transparent',

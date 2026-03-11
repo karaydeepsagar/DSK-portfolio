@@ -119,7 +119,7 @@ const Contact = ({ data }) => {
                 {/* Heading */}
                 <div style={{ textAlign: 'center', marginBottom: '40px' }}>
                     <h2 style={{ fontSize: 'clamp(1.9rem, 3.8vw, 2.8rem)', fontWeight: 800, color: theme.primaryText, marginBottom: '12px' }}>
-                        <span>Let's</span> <span style={{ color: theme.accent }}>Collaborate</span>
+                        <span>Let&apos;s</span> <span style={{ color: theme.accent }}>Collaborate</span>
                     </h2>
                     <div style={{
                         display: 'inline-flex', alignItems: 'center', gap: '8px',
@@ -131,7 +131,7 @@ const Contact = ({ data }) => {
                         <span style={{ fontSize: '0.82rem', fontWeight: '700', color: theme.accent, letterSpacing: '1.5px', textTransform: 'uppercase' }}>Open to Work — Available Now</span>
                     </div>
                     <p style={{ color: theme.mutedText, fontSize: '1rem', maxWidth: '680px', margin: '0 auto' }}>
-                        Ready to elevate your infrastructure? I'm available for new opportunities in Cloud Architecture and DevOps engineering.
+                        Ready to elevate your infrastructure? I&apos;m available for new opportunities in Cloud Architecture and DevOps engineering.
                     </p>
                 </div>
 
@@ -274,7 +274,7 @@ const Contact = ({ data }) => {
                         />
                         <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column' }}>
                             <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: theme.primaryText, marginBottom: '0.3rem' }}>Send a Message</h3>
-                            <p style={{ fontSize: '0.9rem', color: theme.mutedText, marginBottom: '1.5rem' }}>Fill in the details and I'll get back to you promptly.</p>
+                            <p style={{ fontSize: '0.9rem', color: theme.mutedText, marginBottom: '1.5rem' }}>Fill in the details and I&apos;ll get back to you promptly.</p>
 
                             <form ref={form} onSubmit={sendEmail} style={{ display: 'flex', flexDirection: 'column', gap: '14px', flex: 1 }}>
                                 <input type="text" name="user_name" placeholder="Your Name" required

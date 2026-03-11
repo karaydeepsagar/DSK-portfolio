@@ -484,7 +484,7 @@ const Hero = ({ data }) => {
                                     e.currentTarget.style.boxShadow = `0 0 20px ${theme.accent}1A`;
                                 }}
                             >
-                                <Play size={13} color={theme.accent} /> Let's Talk
+                                <Play size={13} color={theme.accent} /> Let&apos;s Talk
                             </button>
                         </div>
                     </motion.div>
