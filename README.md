@@ -274,45 +274,6 @@ Push to `main` → Vercel auto-deploys. Zero config needed.
 
 ---
 
-## Project Structure
-
-```
-DSK-portfolio/
-├── public/
-│   └── Resume.pdf              # Downloadable CV
-├── src/
-│   ├── components/
-│   │   ├── DSKIntro.jsx        # Full-screen intro animation
-│   │   ├── Navbar.jsx          # Floating pill navbar + logo
-│   │   ├── Hero.jsx            # Hero section + DevOps atom
-│   │   ├── Projects.jsx        # Featured projects grid
-│   │   ├── Experience.jsx      # Professional timeline
-│   │   ├── Skills.jsx          # Categorised skill tags
-│   │   ├── Education.jsx       # Education cards
-│   │   ├── Blog.jsx            # Technical articles grid
-│   │   ├── Contact.jsx         # EmailJS contact form
-│   │   ├── CustomCursor.jsx    # Velocity-liquid cursor
-│   │   ├── PremiumEffects.jsx  # Grain overlay + scroll bar
-│   │   ├── IndustrialBackground.jsx
-│   │   ├── SpotlightCard.jsx
-│   │   ├── ThemeToggle.jsx
-│   │   └── ErrorBoundary.jsx
-│   ├── context/
-│   │   └── ThemeContext.jsx    # Global dark/light theme
-│   ├── data/
-│   │   └── portfolioData.js    # All content (experience, projects, skills…)
-│   ├── hooks/
-│   │   └── useBreakpoint.js    # Responsive + performance flags
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
-├── Dockerfile
-├── nginx.conf
-├── vite.config.js
-├── vercel.json
-└── .env.example
-```
-
 ---
 
 ## Local Development
