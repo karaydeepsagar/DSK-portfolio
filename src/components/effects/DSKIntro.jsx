@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTheme } from '../context/ThemeContext';
-import { shouldReduceAnimations, useBreakpoint } from '../hooks/useBreakpoint';
+import { useTheme } from '../../context/ThemeContext';
+import { shouldReduceAnimations, useBreakpoint } from '../../hooks/useBreakpoint';
 
 const DSKIntro = ({ onComplete }) => {
     const { theme } = useTheme();

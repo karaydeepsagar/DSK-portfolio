@@ -3,8 +3,9 @@
 html {
   font-size: 81%;
   /* Slightly scale down for laptops/desktops to fix oversized appearance */
-  background-color: #0a0a0c;
-  /* Default dark fallback */
+  background-color: var(--primary-bg, #0a0a0c);
+  /* Default dark fallback, overridden by theme */
+  transition: background-color 0.3s ease;
 }
 
 @media (max-width: 768px) {
@@ -25,7 +26,7 @@ body {
   --netflix-black: #141414;
   --netflix-dark-gray: #181818;
   --netflix-light-gray: #2F2F2F;
-  --netflix-red: #B22222;
+  --netflix-red: #D10000;
   --netflix-white: #e5e5e5;
   --netflix-hover-white: #ffffff;
 
@@ -63,6 +64,12 @@ body {
   box-sizing: border-box;
 }
 
+/* Accessibility Focus */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
 /* ─── Theme transitions ──────────────────────────────────────────────────── */
 body,
 .App,
@@ -87,6 +94,12 @@ section {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  /* Avoid forcing a composited layer here — translating/forcing layers
+     on large text containers can cause rasterized text that appears
+     ‘stuck’ during fast scrolls. Let the browser decide, or promote
+     only highly-animated sub-elements. */
+  will-change: contents;
+  backface-visibility: hidden;
 }
 
 /* ─── Reduced-motion ─────────────────────────────────────────────────────── */
@@ -108,7 +121,10 @@ body {
   touch-action: manipulation;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prefer legibility while keeping rendering fast; avoid aggressive rasterization */
   text-rendering: optimizeLegibility;
+  backface-visibility: hidden;
+  /* Improve text stability on mobile during animations */
 }
 
 h1,
@@ -122,6 +138,12 @@ h6 {
   line-height: 1.1;
   letter-spacing: -0.02em;
   /* Tighter headings for premium look */
+  backface-visibility: hidden;
+  /* Prevent text flickering during scroll */
+  /* Avoid forcing translateZ on headings — this can rasterize text and
+     make it look blurry/stuck while scrolling on some mobile devices. */
+  -webkit-text-size-adjust: 100%;
+  /* Prevent text size adjustment issues on mobile */
 }
 
 a {
@@ -129,6 +151,13 @@ a {
   color: inherit;
   cursor: pointer;
   transition: all 0.2s ease;
+  backface-visibility: hidden;
+  /* Prevent text flickering */
+}
+
+p {
+  backface-visibility: hidden;
+  /* Improve text stability during scroll */
 }
 
 ul {

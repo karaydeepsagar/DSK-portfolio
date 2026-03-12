@@ -5,8 +5,8 @@ import {
     Code2, Activity, Cpu, Share2, Settings, Box,
     Lock, Zap, Layout, Monitor, MessageSquare
 } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
-import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
+import { useTheme } from '../../context/ThemeContext';
+import { useBreakpoint, shouldReduceAnimations } from '../../hooks/useBreakpoint';
 
 /**
  * IndustrialBackground: Versatile background component for various sections.

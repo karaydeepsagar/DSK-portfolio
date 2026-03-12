@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
+import { useBreakpoint, shouldReduceAnimations } from '../../hooks/useBreakpoint';
 import { motion } from 'framer-motion';
 import { Github, ExternalLink } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
-import SpotlightCard from './SpotlightCard';
+import { useTheme } from '../../context/ThemeContext';
+import SpotlightCard from '../common/SpotlightCard';
 
 const Projects = ({ data }) => {
     const { theme } = useTheme();
     const { isMobile } = useBreakpoint();
+    const heavyBlur = (isMobile || shouldReduceAnimations)
+        ? (theme.mode === 'dark' ? 'blur(30px)' : 'blur(20px)')
+        : (theme.mode === 'dark' ? 'blur(130px)' : 'blur(90px)');
     const sectionRef = useRef(null);
     const [isInView, setIsInView] = useState(true);
 
@@ -24,8 +27,7 @@ const Projects = ({ data }) => {
     }, []);
 
     return (
-        <section ref={sectionRef} id="projects" style={{ position: 'relative', overflow: 'hidden', backgroundColor: theme.mode === 'dark' ? 'transparent' : theme.primaryBg }}>
-            {/* Nucleus glow (background) sized for this panel (RIGHT) */}
+        <section ref={sectionRef} id="projects" style={{ position: 'relative', overflow: 'hidden', backgroundColor: 'transparent' }}>
             <motion.div
                 animate={(isInView && !shouldReduceAnimations) ? { opacity: [0.10, 0.18, 0.10], scale: [1, 1.08, 1] } : false}
                 transition={(isInView && !shouldReduceAnimations) ? { duration: 13, repeat: Infinity, ease: 'easeInOut' } : undefined}
@@ -40,7 +42,7 @@ const Projects = ({ data }) => {
                     transformOrigin: 'center',
                     background: 'radial-gradient(circle, var(--netflix-red) 0%, transparent 72%)',
                     borderRadius: '50%',
-                    filter: 'blur(130px)',
+                    filter: heavyBlur,
                     opacity: theme.mode === 'dark' ? 0.22 : 0.14,
                     willChange: 'transform, opacity',
                     pointerEvents: 'none',
@@ -85,7 +87,7 @@ const Projects = ({ data }) => {
                                     height: '100%',
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    background: theme.cardBg, // Use updated translucent cardBg
+                                    background: theme.cardBg,
                                     boxShadow: theme.cardShadow
                                 }}
                             >
@@ -98,7 +100,6 @@ const Projects = ({ data }) => {
                                         whileHover={{ scale: 1.1 }}
                                         transition={{ duration: 0.5 }}
                                     />
-
                                 </div>
 
                                 <div style={{ padding: '30px', flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -143,7 +144,7 @@ const Projects = ({ data }) => {
                                                     background: theme.glassBg,
                                                     border: `1px solid ${theme.border}`,
                                                     transition: 'all 0.3s',
-                                                    zIndex: 10 // Ensure relative to spotlight
+                                                    zIndex: 10
                                                 }}
                                                 onMouseOver={(e) => e.currentTarget.style.background = theme.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}
                                                 onMouseOut={(e) => e.currentTarget.style.background = theme.glassBg}

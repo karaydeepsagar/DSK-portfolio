@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { useTheme } from '../context/ThemeContext';
-import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useTheme } from '../../context/ThemeContext';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 
 /**
  * SpaceAtmosphere: A high-performance canvas-based background 
@@ -100,15 +100,21 @@ const SpaceAtmosphere = () => {
             requestRef.current = requestAnimationFrame(draw);
         };
 
-        init();
-        requestRef.current = requestAnimationFrame(draw);
-        window.addEventListener('resize', init);
-
-        return () => {
-            cancelAnimationFrame(requestRef.current);
-            window.removeEventListener('resize', init);
+        const onResize = () => {
+            init();
         };
-    }, [isMobile, isActive]);
+
+        init();
+        draw();
+
+        window.addEventListener('resize', onResize);
+        return () => {
+            window.removeEventListener('resize', onResize);
+            if (requestRef.current) {
+                cancelAnimationFrame(requestRef.current);
+            }
+        };
+    }, [isActive, isMobile]);
 
     if (!isActive) return null;
 
@@ -119,12 +125,12 @@ const SpaceAtmosphere = () => {
                 position: 'fixed',
                 top: 0,
                 left: 0,
-                width: '100%',
-                height: '100%',
+                width: '100vw',
+                height: '100vh',
                 pointerEvents: 'none',
-                zIndex: -1, // Behind everything
-                background: '#0a0a0c'
+                zIndex: -1
             }}
+            aria-hidden="true"
         />
     );
 };

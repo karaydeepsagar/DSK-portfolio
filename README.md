@@ -102,21 +102,11 @@ DSK-portfolio/
 │
 ├── 📁 src/
 │   ├── 📁 components/
-│   │   ├── DSKIntro.jsx            # ✨ Full-screen particle intro
-│   │   ├── Navbar.jsx              # 🔲 Floating pill navbar + animated logo
-│   │   ├── Hero.jsx                # 🪐 Hero + 3-ring DevOps atom
-│   │   ├── Projects.jsx            # 💼 Featured projects grid
-│   │   ├── Experience.jsx          # 📅 Professional timeline
-│   │   ├── Skills.jsx              # 🧠 Categorised skill tags
-│   │   ├── Education.jsx           # 🎓 Education cards
-│   │   ├── Blog.jsx                # 📝 Technical articles grid
-│   │   ├── Contact.jsx             # 📬 EmailJS contact form
-│   │   ├── CustomCursor.jsx        # 🖱️  Velocity-liquid cursor (RAF loop)
-│   │   ├── PremiumEffects.jsx      # 🎞️  Grain overlay + scroll progress bar
-│   │   ├── IndustrialBackground.jsx
-│   │   ├── SpotlightCard.jsx
-│   │   ├── ThemeToggle.jsx
-│   │   └── ErrorBoundary.jsx
+│   │   ├── 📁 common/             # Shared components (e.g., ThemeToggle)
+│   │   ├── 📁 effects/            # Visual effects (e.g., CustomCursor)
+│   │   ├── 📁 layout/             # Layout components (e.g., Navbar)
+│   │   ├── 📁 sections/           # Page sections (e.g., Blog, Contact)
+│   │   └── 📁 icons/              # Iconography
 │   │
 │   ├── 📁 context/
 │   │   └── ThemeContext.jsx        # 🌗 Global dark/light theme
@@ -230,20 +220,6 @@ Push to `main` → Vercel auto-deploys. Zero config needed.
 
 </div>
 
----
-
-<div align="center">
-
-<img src="https://capsule-render.vercel.app/api?type=waving&color=D10000&height=120&section=footer&animation=fadeIn" width="100%"/>
-
-**© 2026 Deep Sagar Karay. All rights reserved.**
-
-*Built with React · Powered by Vite · Deployed on Vercel*
-
-</div>
-
-
----
 
 ## Features
 
@@ -358,3 +334,17 @@ Push to `main` — Vercel auto-deploys.
 
 This project is for personal use. All content, graphics, and data belong to Deep Sagar Karay.
 
+---
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=D10000&height=120&section=footer&animation=fadeIn" width="100%"/>
+
+**© 2026 Deep Sagar Karay. All rights reserved.**
+
+*Built with React · Powered by Vite · Deployed on Vercel*
+
+</div>
+
+
+---

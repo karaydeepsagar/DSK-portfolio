@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
-import ThemeToggle from './ThemeToggle';
+import { useTheme } from '../../context/ThemeContext';
+import ThemeToggle from '../common/ThemeToggle';
 
 const Navbar = () => {
     const { theme } = useTheme();
@@ -128,13 +128,13 @@ const Navbar = () => {
                         <line x1="53" y1="50" x2="47" y2="50" stroke={theme.accent} strokeWidth="2" />
                     </svg>
                     <h1 style={{
-                        color: theme.accent,
+                        color: theme.mode === 'dark' ? '#FFFFFF' : theme.accent,
                         fontSize: 'clamp(1.2rem, 3vw, 1.5rem)',
                         fontWeight: '900',
                         letterSpacing: '1px',
                         margin: 0
                     }}>
-                        DSK<span style={{ color: theme.primaryText }}>.</span>
+                        DSK<span style={{ color: theme.mode === 'dark' ? theme.accent : theme.primaryText }}>.</span>
                     </h1>
                 </motion.div>
 

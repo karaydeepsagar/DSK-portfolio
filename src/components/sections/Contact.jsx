@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
+import { useBreakpoint, shouldReduceAnimations } from '../../hooks/useBreakpoint';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Linkedin, Github, Send, Copy, Check } from 'lucide-react';
 import emailjs from '@emailjs/browser';
-import { useTheme } from '../context/ThemeContext';
-import SpotlightCard from './SpotlightCard';
+import { useTheme } from '../../context/ThemeContext';
+import SpotlightCard from '../common/SpotlightCard';
 
 const Contact = ({ data }) => {
     const { theme } = useTheme();
@@ -14,6 +14,9 @@ const Contact = ({ data }) => {
     const [status, setStatus] = useState({ sending: false, sent: false, error: false });
     const [copyError, setCopyError] = useState(false);
     const { isMobile } = useBreakpoint();
+    const heavyBlur = (isMobile || shouldReduceAnimations)
+        ? (theme.mode === 'dark' ? 'blur(30px)' : 'blur(20px)')
+        : (theme.mode === 'dark' ? 'blur(130px)' : 'blur(90px)');
     const [formState, setFormState] = useState({ name: '', email: '', company: '' });
     const [isInView, setIsInView] = useState(true);
 
@@ -43,6 +46,15 @@ const Contact = ({ data }) => {
 
     const sendEmail = (e) => {
         e.preventDefault();
+
+        // Simple email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formState.email)) {
+            setStatus({ sending: false, sent: false, error: true });
+            setTimeout(() => setStatus(s => ({ ...s, error: false })), 3000);
+            return;
+        }
+
         setStatus({ sending: true, sent: false, error: false });
 
         const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
@@ -72,7 +84,7 @@ const Contact = ({ data }) => {
     const isProjectDetailsEnabled = formState.name.trim().length > 0 && formState.email.trim().length > 0;
 
     return (
-        <section ref={sectionRef} id="contact" style={{ position: 'relative', overflow: 'hidden', backgroundColor: theme.mode === 'dark' ? 'transparent' : theme.primaryBg }}>
+        <section ref={sectionRef} id="contact" style={{ position: 'relative', overflow: 'hidden', backgroundColor: 'transparent' }}>
             {copyError && (
                 <div style={{
                     position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
@@ -99,9 +111,9 @@ const Contact = ({ data }) => {
                     height: 'min(900px, 80vw)',
                     x: '-50%',
                     y: '-50%',
-                    background: 'radial-gradient(circle, var(--netflix-red) 0%, transparent 72%)',
+                    background: 'transparent',
                     borderRadius: '50%',
-                    filter: 'blur(130px)',
+                    filter: heavyBlur,
                     opacity: theme.mode === 'dark' ? 0.18 : 0.10,
                     pointerEvents: 'none',
                     zIndex: 0
@@ -119,7 +131,7 @@ const Contact = ({ data }) => {
                 {/* Heading */}
                 <div style={{ textAlign: 'center', marginBottom: '40px' }}>
                     <h2 style={{ fontSize: 'clamp(1.9rem, 3.8vw, 2.8rem)', fontWeight: 800, color: theme.primaryText, marginBottom: '12px' }}>
-                        <span>Let&apos;s</span> <span style={{ color: theme.accent }}>Collaborate</span>
+                        <span style={{ color: theme.primaryText }}>Let&apos;s</span> <span style={{ color: theme.accent }}>Collaborate</span>
                     </h2>
                     <div style={{
                         display: 'inline-flex', alignItems: 'center', gap: '8px',
@@ -167,11 +179,11 @@ const Contact = ({ data }) => {
                         <motion.div
                             animate={shouldLoop ? { scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] } : {}}
                             transition={shouldLoop ? { duration: 8, repeat: Infinity, ease: 'easeInOut' } : undefined}
-                            style={{
+                        style={{
                                 position: 'absolute', bottom: '-80px', left: '-80px',
                                 width: '320px', height: '320px',
-                                background: 'radial-gradient(circle, #710202 0%, transparent 70%)',
-                                borderRadius: '50%', filter: 'blur(60px)',
+                                background: 'transparent',
+                                borderRadius: '50%', filter: (isMobile || shouldReduceAnimations) ? 'blur(18px)' : 'blur(60px)',
                                 pointerEvents: 'none', zIndex: 0,
                             }}
                         />
@@ -218,7 +230,7 @@ const Contact = ({ data }) => {
                                         <span style={{ fontSize: '0.95rem', fontWeight: 600, color: theme.primaryText, display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Bengaluru, Hyderabad, Chennai</span>
                                         <span style={{ fontSize: '0.75rem', color: theme.accent, fontWeight: 600 }}>Open to Relocation</span>
                                     </div>
-                                    <a href="https://maps.google.com/?q=Bengaluru,India" target="_blank" rel="noopener noreferrer"
+                                    <a href="https://maps.google.com/?q=Bengaluru,India" target="_blank" rel="noopener noreferrer" aria-label="View on Google Maps"
                                         style={{ background: 'transparent', border: 'none', color: theme.mutedText, cursor: 'pointer', padding: '6px', flexShrink: 0, display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
                                         <MapPin size={16} />
                                     </a>
@@ -265,12 +277,12 @@ const Contact = ({ data }) => {
                             animate={shouldLoop ? { scale: [1, 1.2, 1], opacity: [0.15, 0.35, 0.15] } : {}}
                             transition={shouldLoop ? { duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 } : undefined}
                             style={{
-                                position: 'absolute', top: '-80px', right: '-80px',
-                                width: '300px', height: '300px',
-                                background: 'radial-gradient(circle, #710202 0%, transparent 70%)',
-                                borderRadius: '50%', filter: 'blur(60px)',
-                                pointerEvents: 'none', zIndex: 0,
-                            }}
+                                    position: 'absolute', top: '-80px', right: '-80px',
+                                    width: '300px', height: '300px',
+                                    background: 'transparent',
+                                    borderRadius: '50%', filter: (isMobile || shouldReduceAnimations) ? 'blur(18px)' : 'blur(60px)',
+                                    pointerEvents: 'none', zIndex: 0,
+                                }}
                         />
                         <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column' }}>
                             <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: theme.primaryText, marginBottom: '0.3rem' }}>Send a Message</h3>

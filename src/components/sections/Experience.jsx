@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
+import { useBreakpoint, shouldReduceAnimations } from '../../hooks/useBreakpoint';
 import { motion } from 'framer-motion';
 import { Briefcase, Calendar, Building2, UserCircle, CheckCircle2 } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
 
 const Experience = ({ data }) => {
     const { theme } = useTheme();
     const { isMobile } = useBreakpoint();
+    const heavyBlur = (isMobile || shouldReduceAnimations)
+        ? (theme.mode === 'dark' ? 'blur(30px)' : 'blur(20px)')
+        : (theme.mode === 'dark' ? 'blur(110px)' : 'blur(80px)');
     const sectionRef = useRef(null);
     const [isInView, setIsInView] = useState(true);
 
@@ -28,7 +31,7 @@ const Experience = ({ data }) => {
     const shouldLoop = isInView && !shouldReduceAnimations;
 
     return (
-        <section ref={sectionRef} id="experience" style={{ position: 'relative', overflow: 'hidden', backgroundColor: theme.mode === 'dark' ? 'transparent' : theme.primaryBg }}>
+        <section ref={sectionRef} id="experience" style={{ position: 'relative', overflow: 'hidden', backgroundColor: 'transparent' }}>
             <div className="section-padding" style={{
                 padding: isMobile ? '100px 15px 40px' : '120px 6% 80px',
                 background: 'transparent',
@@ -51,7 +54,6 @@ const Experience = ({ data }) => {
 
                 <div className="experience-list" style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '40px' }}>
                     {data.map((job, index) => (
-                        // Key uses company+period compound to avoid index-based reconciliation bugs
                         <motion.div
                             key={`${job.company}-${job.period}`}
                             initial={{ opacity: 0, x: -50 }}
@@ -65,16 +67,12 @@ const Experience = ({ data }) => {
                                 borderRadius: '32px',
                                 padding: 'clamp(20px, 5vw, 50px)',
                                 border: `1px solid ${theme.border}`,
-                                // Strictly left and right glow: high offset + aggressive negative spread to choke top/bottom bleed
                                 boxShadow: `-30px 0 35px -20px ${theme.mode === 'dark' ? '#ffffff44' : '#94a3b844'}, 30px 0 35px -20px ${theme.mode === 'dark' ? '#ffffff44' : '#94a3b844'}`,
                                 position: 'relative',
                                 overflow: 'hidden',
-                                width: '100%' // Wide screen layout
+                                width: '100%'
                             }}
                         >
-                            {/* Per-company panel background: nucleus + rotating infinity (blurred)
-                                 Skipped on low-power devices — 6 simultaneous animated SVG paths
-                                 is too expensive for TV/low-core hardware. */}
                             {!shouldReduceAnimations && <div style={{
                                 position: 'absolute',
                                 inset: 0,
@@ -97,7 +95,7 @@ const Experience = ({ data }) => {
                                         transformOrigin: 'center',
                                         background: `radial-gradient(circle, ${theme.mode === 'dark' ? '#ffffffcf' : '#94a3b8'} 0%, transparent 75%)`,
                                         borderRadius: '50%',
-                                        filter: 'blur(110px)',
+                                        filter: heavyBlur,
                                         willChange: 'transform, opacity'
                                     }}
                                 />

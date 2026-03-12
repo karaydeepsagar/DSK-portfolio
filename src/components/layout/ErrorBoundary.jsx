@@ -28,7 +28,7 @@ class ErrorBoundary extends React.Component {
                     gap: '20px',
                     padding: '20px'
                 }}>
-                    <h1 style={{ fontSize: '2rem', color: '#B22222' }}>Oops! Something went wrong</h1>
+                    <h1 style={{ fontSize: '2rem', color: '#D10000' }}>Oops! Something went wrong</h1>
                     <p style={{ fontSize: '1rem', color: '#aaa', maxWidth: '600px', textAlign: 'center' }}>
                         {/* FIX: Don't expose raw error.message in production UI — it may leak
                             internal paths, library versions, or stack hints to users.

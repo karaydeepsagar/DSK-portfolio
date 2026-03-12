@@ -1,25 +1,25 @@
 import React, { useState, useCallback, Suspense, lazy } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ThemeProvider, useTheme } from './context/ThemeContext';
-import ErrorBoundary from './components/ErrorBoundary';
-import DSKIntro from './components/DSKIntro';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import PremiumEffects from './components/PremiumEffects';
-import SpaceAtmosphere from './components/SpaceAtmosphere';
-import CustomCursor from './components/CustomCursor';
-import { portfolioData } from './data/portfolioData';
+import { ThemeProvider, useTheme } from '../context/ThemeContext';
+import ErrorBoundary from '../components/layout/ErrorBoundary';
+import DSKIntro from '../components/effects/DSKIntro';
+import Navbar from '../components/layout/Navbar';
+import Hero from '../components/sections/Hero';
+import PremiumEffects from '../components/effects/PremiumEffects';
+import SpaceAtmosphere from '../components/effects/SpaceAtmosphere';
+import CustomCursor from '../components/effects/CustomCursor';
+import { portfolioData } from '../data/portfolioData';
 
 // Lazy loading non-critical sections to reduce initial bundle size
-const Projects = lazy(() => import('./components/Projects'));
-const Experience = lazy(() => import('./components/Experience'));
-const Skills = lazy(() => import('./components/Skills'));
-const Education = lazy(() => import('./components/Education'));
-const Blog = lazy(() => import('./components/Blog'));
-const Contact = lazy(() => import('./components/Contact'));
+const Projects = lazy(() => import('../components/sections/Projects'));
+const Experience = lazy(() => import('../components/sections/Experience'));
+const Skills = lazy(() => import('../components/sections/Skills'));
+const Education = lazy(() => import('../components/sections/Education'));
+const Blog = lazy(() => import('../components/sections/Blog'));
+const Contact = lazy(() => import('../components/sections/Contact'));
 
-// Loading Placeholder for Suspense
-const SectionPlaceholder = () => <div style={{ minHeight: '50vh', background: 'transparent' }} />;
+import SectionSkeleton from '../components/common/SectionSkeleton';
+import ScrollToTop from '../components/layout/ScrollToTop';
 
 const AppContent = () => {
     const { theme } = useTheme();
@@ -36,24 +36,26 @@ const AppContent = () => {
             <Navbar />
             <Hero data={portfolioData.personalInfo} />
 
-            <Suspense fallback={<SectionPlaceholder />}>
+            <Suspense fallback={<SectionSkeleton />}>
                 <Skills data={portfolioData.skills} />
             </Suspense>
-            <Suspense fallback={<SectionPlaceholder />}>
+            <Suspense fallback={<SectionSkeleton />}>
                 <Experience data={portfolioData.experience} />
             </Suspense>
-            <Suspense fallback={<SectionPlaceholder />}>
+            <Suspense fallback={<SectionSkeleton />}>
                 <Projects data={portfolioData.projects} />
             </Suspense>
-            <Suspense fallback={<SectionPlaceholder />}>
+            <Suspense fallback={<SectionSkeleton />}>
                 <Blog data={portfolioData.blogs} />
             </Suspense>
-            <Suspense fallback={<SectionPlaceholder />}>
+            <Suspense fallback={<SectionSkeleton />}>
                 <Education data={portfolioData.education} />
             </Suspense>
-            <Suspense fallback={<SectionPlaceholder />}>
+            <Suspense fallback={<SectionSkeleton />}>
                 <Contact data={portfolioData.personalInfo} />
             </Suspense>
+
+            <ScrollToTop />
 
             <footer style={{
                 textAlign: 'center',

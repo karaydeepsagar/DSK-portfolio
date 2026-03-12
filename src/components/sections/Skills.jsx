@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { motion } from 'framer-motion';
 import { Cloud, Terminal, Monitor, Settings, Box, Globe, Server, Activity } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
-import SpotlightCard from './SpotlightCard';
+import { useTheme } from '../../context/ThemeContext';
+import SpotlightCard from '../common/SpotlightCard';
 
 // Custom AI icon approximating an AI chip with connected nodes
 const AiIcon = ({ size = 24 }) => (
@@ -294,3 +294,4 @@ const Skills = ({ data }) => {
 };
 
 export default Skills;
+

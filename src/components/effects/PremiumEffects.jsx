@@ -1,7 +1,7 @@
 import React, { useId } from 'react';
-import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
+import { useBreakpoint, shouldReduceAnimations } from '../../hooks/useBreakpoint';
 import { motion, useScroll, useSpring } from 'framer-motion';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
 
 /**
  * PremiumEffects: Adds cinematic overlays and global UX enhancements.

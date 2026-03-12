@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Info, Download, CheckCircle } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
-import IndustrialBackground from './IndustrialBackground';
-import { useBreakpoint, shouldReduceAnimations } from '../hooks/useBreakpoint';
+import { useTheme } from '../../context/ThemeContext';
+import IndustrialBackground from '../effects/IndustrialBackground';
+import { useBreakpoint, shouldReduceAnimations } from '../../hooks/useBreakpoint';
 // DevOps & Cloud Icons from multiple sets to ensure availability
 import { SiDocker, SiKubernetes, SiAnsible, SiJenkins, SiDatadog, SiTerraform, SiGrafana, SiGithub } from 'react-icons/si';
 import { VscAzure, VscTerminal } from 'react-icons/vsc';
@@ -44,7 +44,7 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
             tools: [
                 { Icon: SiDocker, color: '#61b1ed' },
                 { Icon: SiKubernetes, color: '#1b53cc' },
-                { Icon: SiAnsible, color: '#B22222' }
+                { Icon: SiAnsible, color: '#c02828' }
             ],
             direction: 1 // Clockwise
         },
@@ -52,9 +52,9 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
             radius: 175,
             speed: 35,
             tools: [
-                { Icon: SiGrafana, color: '#fd5234' },
-                { Icon: VscTerminal, color: '#4AF626' },
-                { Icon: SiDatadog, color: '#632CA6' }
+                { Icon: SiGrafana, color: '#ef573c' },
+                { Icon: VscTerminal, color: '#2bb70f' },
+                { Icon: SiDatadog, color: '#8250be' }
             ],
             direction: -1 // Counter-clockwise
         },
@@ -62,12 +62,12 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
             radius: 250,
             speed: 45,
             tools: [
-                { Icon: SiJenkins, color: theme.mode === 'dark' ? '#FFFFFF' : '#4A4A4A' },
-                { Icon: AwsThemedIcon, color: '#FF9900' },
-                { Icon: VscAzure, color: '#0078D4' },
+                { Icon: SiJenkins, color: theme.mode === 'dark' ? '#ffffff' : '#2e2d2d' },
+                { Icon: AwsThemedIcon, color: '#ff8800' },
+                { Icon: VscAzure, color: '#0687ea' },
                 { Icon: GcpGradientIcon, color: '#4285F4' },
                 { Icon: SiGithub, color: theme.mode === 'dark' ? '#FFFFFF' : '#1A1A1A' },
-                { Icon: SiTerraform, color: '#7B42BC' }
+                { Icon: SiTerraform, color: '#652ba6' }
             ],
             direction: 1 // Clockwise
         }
@@ -75,7 +75,7 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
 
     // On low-power devices / TVs, skip all orbit animations and just show static icons
     if (shouldReduceAnimations) {
-        return (
+                return (
             <div style={{
                 position: 'absolute',
                 left: desktopLeftOffset,
@@ -119,7 +119,7 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
             opacity: isActive ? 1 : 0
         }}>
             {/* Core Nucleus Pulse */}
-            {isActive && (
+                {isActive && (
                 <motion.div
                     animate={{
                         scale: [1, 1.4, 1],

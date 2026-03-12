@@ -1,7 +1,7 @@
-// src/components/SpotlightCard.jsx
+// src/components/common/SpotlightCard.jsx
 import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
 
 const SpotlightCard = ({ children, className = "", onClick, style = {} }) => {
     const divRef = useRef(null);
