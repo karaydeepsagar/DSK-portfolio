@@ -171,7 +171,7 @@ export const portfolioData = {
             description: "Engineered an end-to-end automated deployment pipeline for microservices. Integrated Shift-Left security practices including static analysis (SonarQube), dependency vulnerability scanning (Trivy), and container image signing. Orchestrated zero-downtime deployments to EKS using Helm and Canary release strategies. Implemented GitOps-driven continuous delivery using ArgoCD, enabling automated sync, self-healing deployments, and full audit trails across dev, staging, and production environments.",
             technologies: ["Jenkins", "Kubernetes", "SonarQube", "Trivy", "Helm", "ArgoCD", "AWS EKS"],
             link: "https://github.com/karaydeepsagar/devsecops-pipeline",
-            image: "https://qentelli.com/sites/default/files/2025-02/Building%20a%20DevSecOps%20Maturity%20Model%201_0.png",
+            image: "https://media.licdn.com/dms/image/v2/D4E12AQF8_MbLMf9-gA/article-cover_image-shrink_600_2000/article-cover_image-shrink_600_2000/0/1673450798517?e=2147483647&v=beta&t=mNRxOA-BY9SlDVC3bZsx1K0jsGt8FrIGbLSVCGqjCCo",
             demo: null
         }
     ],
