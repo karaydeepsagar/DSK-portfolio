@@ -332,7 +332,7 @@ Push to `main` — Vercel auto-deploys.
 
 ## License
 
-This project is for personal use. All content, graphics, and data belong to Deep Sagar Karay.
+This project is for personal use. All content, graphics, and data belong to {DSK} Deep Sagar Karay .
 
 ---
 
