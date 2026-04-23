@@ -101,7 +101,7 @@ const Contact = ({ data }) => {
 
             {/* Background section glow */}
             <motion.div
-                animate={(isInView && !shouldReduceAnimations) ? { opacity: [0.10, 0.18, 0.10], scale: [1, 1.08, 1] } : false}
+                animate={(isInView && !shouldReduceAnimations) ? { opacity: [0.10, 0.18, 0.10], scale: [1, 1.08, 1] } : { opacity: 0.10, scale: 1 }}
                 transition={(isInView && !shouldReduceAnimations) ? { duration: 13, repeat: Infinity, ease: 'easeInOut' } : undefined}
                 style={{
                     position: 'absolute',
@@ -116,7 +116,8 @@ const Contact = ({ data }) => {
                     filter: heavyBlur,
                     opacity: theme.mode === 'dark' ? 0.18 : 0.10,
                     pointerEvents: 'none',
-                    zIndex: 0
+                    zIndex: 0,
+                    willChange: 'opacity, transform'
                 }}
             />
 
@@ -177,7 +178,7 @@ const Contact = ({ data }) => {
                         backdropFilter: 'blur(20px)',
                     }}>
                         <motion.div
-                            animate={shouldLoop ? { scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] } : {}}
+                            animate={shouldLoop ? { scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] } : { scale: 1, opacity: 0.2 }}
                             transition={shouldLoop ? { duration: 8, repeat: Infinity, ease: 'easeInOut' } : undefined}
                         style={{
                                 position: 'absolute', bottom: '-80px', left: '-80px',
@@ -185,6 +186,7 @@ const Contact = ({ data }) => {
                                 background: 'transparent',
                                 borderRadius: '50%', filter: (isMobile || shouldReduceAnimations) ? 'blur(18px)' : 'blur(60px)',
                                 pointerEvents: 'none', zIndex: 0,
+                                willChange: 'transform, opacity'
                             }}
                         />
                         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -274,7 +276,7 @@ const Contact = ({ data }) => {
                         backdropFilter: 'blur(20px)',
                     }}>
                         <motion.div
-                            animate={shouldLoop ? { scale: [1, 1.2, 1], opacity: [0.15, 0.35, 0.15] } : {}}
+                            animate={shouldLoop ? { scale: [1, 1.2, 1], opacity: [0.15, 0.35, 0.15] } : { scale: 1, opacity: 0.15 }}
                             transition={shouldLoop ? { duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 } : undefined}
                             style={{
                                     position: 'absolute', top: '-80px', right: '-80px',
@@ -282,6 +284,7 @@ const Contact = ({ data }) => {
                                     background: 'transparent',
                                     borderRadius: '50%', filter: (isMobile || shouldReduceAnimations) ? 'blur(18px)' : 'blur(60px)',
                                     pointerEvents: 'none', zIndex: 0,
+                                    willChange: 'transform, opacity'
                                 }}
                         />
                         <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column' }}>

@@ -74,33 +74,33 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
     ];
 
     // On low-power devices / TVs, skip all orbit animations and just show static icons
-    if (shouldReduceAnimations) {
-                return (
-            <div style={{
-                position: 'absolute',
-                left: desktopLeftOffset,
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: '600px',
-                height: '600px',
-                zIndex: 1,
-                pointerEvents: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                opacity: 0.5
-            }}>
-                <div style={{
-                    width: '100px',
-                    height: '100px',
-                    background: 'radial-gradient(circle, #b9090b 0%, transparent 70%)',
-                    borderRadius: '50%',
-                    filter: 'blur(20px)',
-                    opacity: 0.6
-                }} />
-            </div>
-        );
-    }
+    // if (shouldReduceAnimations) {
+    //             return (
+    //         <div style={{
+    //             position: 'absolute',
+    //             left: desktopLeftOffset,
+    //             top: '50%',
+    //             transform: 'translateY(-50%)',
+    //             width: '600px',
+    //             height: '600px',
+    //             zIndex: 1,
+    //             pointerEvents: 'none',
+    //             display: 'flex',
+    //             alignItems: 'center',
+    //             justifyContent: 'center',
+    //             opacity: 0.5
+    //         }}>
+    //             <div style={{
+    //                 width: '100px',
+    //                 height: '100px',
+    //                 background: 'radial-gradient(circle, #b9090b 0%, transparent 70%)',
+    //                 borderRadius: '50%',
+    //                 filter: 'blur(20px)',
+    //                 opacity: 0.6
+    //             }} />
+    //         </div>
+    //     );
+    // }
 
     return (
         <div style={{
@@ -123,8 +123,7 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
                 <motion.div
                     animate={{
                         scale: [1, 1.4, 1],
-                        opacity: [0.3, 0.6, 0.3],
-                        filter: isMobile ? ['blur(10px)', 'blur(20px)', 'blur(10px)'] : ['blur(20px)', 'blur(35px)', 'blur(20px)']
+                        opacity: [0.3, 0.6, 0.3]
                     }}
                     transition={{ duration: 4, repeat: Infinity }}
                     style={{
@@ -134,7 +133,9 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
                         borderRadius: '50%',
                         position: 'absolute',
                         zIndex: 0,
-                        opacity: 0.8
+                        opacity: 0.8,
+                        filter: 'blur(20px)',
+                        willChange: 'transform, opacity'
                     }}
                 />
             )}
@@ -151,7 +152,8 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
                                     position: 'absolute',
                                     width: '100%',
                                     height: '100%',
-                                    transformStyle: 'preserve-3d'
+                                    transformStyle: 'preserve-3d',
+                                    willChange: 'transform'
                                 }}
                                 animate={{ rotate: 360 * orbit.direction }}
                                 transition={{ duration: orbit.speed, repeat: Infinity, ease: "linear" }}
@@ -176,7 +178,8 @@ const DevOpsAtom = ({ theme, isActive = true }) => {
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            filter: isMobile ? 'none' : `drop-shadow(0 0 10px ${tool.color}44)`
+                                            filter: isMobile ? 'none' : `drop-shadow(0 0 10px ${tool.color}44)`,
+                                            willChange: 'transform'
                                         }}
                                     >
                                         <tool.Icon size={33} />
@@ -220,9 +223,11 @@ const Hero = ({ data }) => {
             backgroundColor: theme.mode === 'dark' ? 'transparent' : theme.primaryBg,
             paddingTop: isMobile ? '80px' : '0',
             transition: 'background-color 0.3s ease',
-            contain: 'paint' // Optimize rendering boundaries
+            contain: 'layout style paint',
+            backfaceVisibility: 'hidden',
+            perspective: '1000px'
         }}>
-            <IndustrialBackground type="home" isActive={isInView} />
+            <IndustrialBackground type="home" isActive={true} />
 
             {/* DevOps Atom Cluster - Side-by-side in Landscape, Top in Portrait */}
             <div style={{
@@ -231,11 +236,10 @@ const Hero = ({ data }) => {
                 top: isLandscape ? '50%' : (isMobile ? '28%' : '50%'), // Adjusted mobile top to center it better 
                 transform: isLandscape ? 'translateY(-50%) scale(0.55)' : (isMobile ? 'translateX(-50%) scale(0.65)' : 'translateY(-50%) scale(0.97)'), // Increased mobile scale slightly
                 // Unified opacity: High visibility on all devices as requested
-                opacity: isInView ? 1 : 0,
-                transition: 'all 0.5s ease',
-                willChange: 'transform' // Consolidated hardware acceleration hint
+                opacity: 1,
+                transition: 'all 0.5s ease'
             }}>
-                <DevOpsAtom theme={theme} isActive={isInView} />
+                <DevOpsAtom theme={theme} isActive={true} />
             </div>
 
             <div className="container" style={{

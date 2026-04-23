@@ -1,15 +1,25 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext';
-import { shouldReduceAnimations, useBreakpoint } from '../../hooks/useBreakpoint';
+import { prefersReducedMotion } from '../../hooks/useBreakpoint';
 
 const DSKIntro = ({ onComplete }) => {
     const { theme } = useTheme();
-    const { isMobile } = useBreakpoint();
     const [phase, setPhase] = useState('init');
+    const [isDesktop, setIsDesktop] = useState(() => typeof window !== 'undefined' && window.innerWidth > 1024);
 
-    // Determine animation reduction eagerly — used both in useMemo and JSX
-    const reduceAnim = shouldReduceAnimations || isMobile;
+    // Determine animation reduction eagerly — only respect prefer-reduced-motion.
+    const reduceAnim = prefersReducedMotion;
+
+    useEffect(() => {
+        // Handle window resize to update desktop state
+        const handleResize = () => {
+            setIsDesktop(window.innerWidth > 1024);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         // Sequence:
@@ -27,88 +37,51 @@ const DSKIntro = ({ onComplete }) => {
         };
     }, [onComplete]);
 
-    // Generate random triangles for EDGES (Top, Bottom, Left, Right corners)
-    // Count is unchanged from original — 120 on normal, 30 on low-power devices.
-    // Smoothness is achieved via GPU hints + disabling infinite float loops on mobile,
-    // NOT by reducing tile count.
+    // Generate random triangles across all 4 corners with uniform density
     const particles = useMemo(() => {
-        const count = shouldReduceAnimations ? 30 : 120;
-        return Array.from({ length: count }).map((_, i) => {
-            // Distribute into 6 sectors to ensuring coverage
-            // 0,1: Top Left / Top Right
-            // 2,3: Bottom Left / Bottom Right
-            // 4: Top Middle
-            // 5: Bottom Middle
-            const sector = i % 6; 
-            
-            // Random properties
-            const size = Math.random() * 35 + 15; 
-            const rotation = Math.random() * 360;
-            const delay = Math.random() * 0.8;
-            
-            // Colors
-            const type = Math.floor(Math.random() * 3);
-            let color;
-            if (type === 0) color = theme.accent || '#b91c1c'; // Red
-            else if (type === 1) color = '#e5e5e5'; // White/Light Grey
-            else color = '#333333'; // Dark Grey
+        const count = prefersReducedMotion ? 30 : (isDesktop ? 320 : 200);
+        const result = [];
+        let id = 0;
 
-            // Position Logic
-            // REFINED: Ensure "Surrounded but not too close"
-            // Use stricter limits to keep center clean (Center safe zone approx 40% of screen)
-            let style = {};
-            let initial = {};
-            const flyDist = 150;
-
-            // Safe Zone Logic:
-            // Keep elements within 0-35% of the edges, leaving the middle 30% totally clear.
-            const spreadFromEdge = Math.random() * 35; // 0% to 35% from the edge
-            const spreadAlongEdge = Math.random() * 100; // 0% to 100% along the edge side
-
-            if (sector === 0) { // Top Left Corner 
-                // Restrict to top-left corner zone
-                style = { top: `${Math.random() * 30}%`, left: `${Math.random() * 35}%` };
-                initial = { x: -flyDist, y: -flyDist };
-            } else if (sector === 1) { // Top Right Corner
-                style = { top: `${Math.random() * 30}%`, right: `${Math.random() * 35}%` };
-                initial = { x: flyDist, y: -flyDist };
-            } else if (sector === 2) { // Bottom Left Corner
-                style = { bottom: `${Math.random() * 30}%`, left: `${Math.random() * 35}%` };
-                initial = { x: -flyDist, y: flyDist };
-            } else if (sector === 3) { // Bottom Right Corner
-                style = { bottom: `${Math.random() * 30}%`, right: `${Math.random() * 35}%` };
-                initial = { x: flyDist, y: flyDist };
-            } else if (sector === 4) { // Top Middle - Shallow depth
-                // Must stay very close to top to avoid hitting text
-                style = { top: `${Math.random() * 20}%`, left: `${20 + Math.random() * 60}%` };
-                initial = { y: -flyDist, x: 0 };
-            } else { // Bottom Middle - Shallow depth
-                // Must stay very close to bottom
-                style = { bottom: `${Math.random() * 20}%`, left: `${20 + Math.random() * 60}%` };
-                initial = { y: flyDist, x: 0 };
+        // Helper: Create particles for a sector
+        const addSector = (amount, minL, maxL, minT, maxT, ox, oy) => {
+            for (let i = 0; i < amount; i++) {
+                result.push({
+                    id: id++,
+                    leftPercent: minL + Math.random() * (maxL - minL),
+                    topPercent: minT + Math.random() * (maxT - minT),
+                    offsetX: ox,
+                    offsetY: oy,
+                    size: Math.random() * 30 + 12,
+                    rotation: Math.random() * 360,
+                    color: [theme.accent || '#b91c1c', '#d0d0d0', '#808080'][Math.floor(Math.random() * 3)],
+                    delay: Math.random() * 0.8,
+                    floatDuration: 2.5 + Math.random() * 1.5,
+                    rotateDuration: 3.5 + Math.random() * 2.5
+                });
             }
+        };
 
-            // Bake random float-animation durations into particle data so they
-            // are stable across renders and not recomputed in JSX (avoids 120
-            // random() calls on every re-render).
-            const floatDuration = 3 + Math.random() * 2;
-            const rotateDuration = 4 + Math.random() * 3;
+        if (isDesktop) {
+            // Uniform distribution across all 4 corners
+            addSector(35, 0, 32, 0, 32, -400, -400);      // Top Left
+            addSector(35, 68, 100, 0, 32, 400, -400);     // Top Right
+            addSector(35, 0, 32, 68, 100, -400, 400);     // Bottom Left
+            addSector(35, 68, 100, 68, 100, 400, 400);    // Bottom Right
+            addSector(100, 5, 95, 0, 28, 0, -400);        // Top Middle
+            addSector(80, 5, 95, 72, 100, 0, 400);        // Bottom Middle
+        } else {
+            // Mobile: equal distribution
+            addSector(25, 0, 32, 0, 32, -400, -400);
+            addSector(25, 68, 100, 0, 32, 400, -400);
+            addSector(25, 0, 32, 68, 100, -400, 400);
+            addSector(25, 68, 100, 68, 100, 400, 400);
+            addSector(40, 10, 90, 0, 30, 0, -400);
+            addSector(60, 10, 90, 70, 100, 0, 400);
+        }
 
-            return {
-                id: i,
-                style,
-                initial,
-                size,
-                rotation,
-                color,
-                delay,
-                floatDuration,
-                rotateDuration
-            };
-        });
-    // FIX: Depend only on primitive theme values (mode, accent) not the full theme object.
-    // The theme object is a new reference every render, making the memo useless.
-    }, [theme.mode, theme.accent, isMobile]);
+        return result;
+    }, [theme.accent, prefersReducedMotion, isDesktop]);
 
     return (
         <motion.div
@@ -134,7 +107,12 @@ const DSKIntro = ({ onComplete }) => {
             {(phase === 'triangles' || phase === 'text') && particles.map((p) => (
                 <motion.div
                     key={p.id}
-                    initial={{ ...p.initial, opacity: 0, scale: 0 }}
+                    initial={{ 
+                        x: p.offsetX, 
+                        y: p.offsetY, 
+                        opacity: 0, 
+                        scale: 0
+                    }}
                     animate={{ 
                         x: 0, 
                         y: 0, 
@@ -148,11 +126,11 @@ const DSKIntro = ({ onComplete }) => {
                         ease: "backOut" 
                     }}
                     style={{
-                        position: 'absolute',
-                        ...p.style,
+                        position: 'fixed',
+                        left: `${p.leftPercent}%`,
+                        top: `${p.topPercent}%`,
+                        transform: 'translate(-50%, -50%)',
                         zIndex: 1,
-                        // Pre-promote to GPU compositor layer so fly-in
-                        // transform updates bypass the main thread paint step.
                         willChange: 'transform'
                     }}
                 >

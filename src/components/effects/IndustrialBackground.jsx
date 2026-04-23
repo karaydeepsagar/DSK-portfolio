@@ -278,11 +278,12 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                     strokeLinecap="butt"
                     strokeLinejoin="round"
                     strokeDasharray="28 92"
-                    animate={(homeBoost && isActive && !shouldReduceAnimations) ? { strokeDashoffset: [60, -260] } : {}}
-                    transition={(homeBoost && isActive && !shouldReduceAnimations) ? { duration: 10, repeat: Infinity, ease: "linear" } : {}}
+                    animate={{ strokeDashoffset: [60, -260] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                     opacity={homeBoost
                         ? (theme.mode === 'dark' ? 0.67 : 0.15)
                         : (theme.mode === 'dark' ? 0.36 : 0.0)}
+                    style={{ willChange: 'stroke-dashoffset' }}
                 />
                 <motion.path
                     d={infinityPath}
@@ -292,11 +293,12 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                     strokeLinecap="butt"
                     strokeLinejoin="round"
                     strokeDasharray="28 92"
-                    animate={(homeBoost && isActive && !shouldReduceAnimations) ? { strokeDashoffset: [60, -260] } : {}}
-                    transition={(homeBoost && isActive && !shouldReduceAnimations) ? { duration: 10, repeat: Infinity, ease: "linear" } : {}}
+                    animate={{ strokeDashoffset: [60, -260] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                     opacity={homeBoost
                         ? (theme.mode === 'dark' ? 0.15 : 0.61)
                         : (theme.mode === 'dark' ? 0.0 : 0.34)}
+                    style={{ willChange: 'stroke-dashoffset' }}
                 />
                 <motion.path
                     d={infinityPath}
@@ -306,11 +308,12 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                     strokeLinecap="butt"
                     strokeLinejoin="round"
                     strokeDasharray="28 92"
-                    animate={(homeBoost && isActive && !shouldReduceAnimations) ? { strokeDashoffset: [0, -320] } : {}}
-                    transition={(homeBoost && isActive && !shouldReduceAnimations) ? { duration: 10, repeat: Infinity, ease: "linear" } : {}}
+                    animate={{ strokeDashoffset: [0, -320] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                     opacity={homeBoost
                         ? (theme.mode === 'dark' ? 0.87 : 0.87)
                         : (theme.mode === 'dark' ? 0.55 : 0.62)}
+                    style={{ willChange: 'stroke-dashoffset' }}
                 />
             </svg>
 
@@ -339,11 +342,11 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                 }}>
                     {/* Core Radial Glow */}
                     <motion.div
-                        animate={(homeBoost && isActive && !shouldReduceAnimations) ? {
+                        animate={{
                             scale: [1, 1.2, 1],
                             opacity: [0.4, 0.7, 0.4]
-                        } : {}}
-                        transition={(homeBoost && isActive && !shouldReduceAnimations) ? { duration: 8, repeat: Infinity, ease: "easeInOut" } : {}}
+                        }}
+                        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                         style={{
                             position: 'relative',
                             width: '70%',
@@ -354,7 +357,8 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                                 ? 'blur(40px)'
                                 : (theme.mode === 'dark' ? 'blur(120px)' : 'blur(80px)'),
                             opacity: theme.mode === 'dark' ? 0.35 : 0.5,
-                            zIndex: -1
+                            zIndex: -1,
+                            willChange: 'transform, opacity'
                         }}
                     />
 
@@ -375,30 +379,31 @@ const IndustrialBackground = ({ type = 'home', variant = 'default', side = 'righ
                     return (
                         <motion.div
                             key={idx}
-                            animate={(homeBoost && isActive && !shouldReduceAnimations) ? { rotate: [initialRotation, initialRotation + 360] } : {}}
-                            transition={(homeBoost && isActive && !shouldReduceAnimations) ? {
+                            animate={{ rotate: [initialRotation, initialRotation + 360] }}
+                            transition={{
                                 duration: orbitSpeed,
                                 repeat: Infinity,
                                 ease: "linear"
-                            } : {}}
+                            }}
                             style={{
                                 position: 'absolute',
                                 top: '50%',
                                 left: '50%',
                                 width: '1px', // Pivot point
                                 height: '1px',
-                                zIndex: 2
+                                zIndex: 2,
+                                willChange: 'transform'
                             }}
                         >
                             <motion.div
-                                animate={(homeBoost && isActive && !shouldReduceAnimations) ? {
+                                animate={{
                                     rotate: [-(initialRotation), -(initialRotation + 360)], // Counter-rotate at matching speed
                                     scale: [1, 1.1, 1],
-                                } : {}}
-                                transition={(homeBoost && isActive && !shouldReduceAnimations) ? {
+                                }}
+                                transition={{
                                     rotate: { duration: orbitSpeed, repeat: Infinity, ease: "linear" },
                                     scale: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                                } : {}}
+                                }}
                                 style={{
                                     position: 'absolute',
                                     left: orbitRadius,
