@@ -100,24 +100,21 @@ const Contact = ({ data }) => {
             `}</style>
 
             {/* Background section glow */}
-            <motion.div
-                animate={(isInView && !shouldReduceAnimations) ? { opacity: [0.10, 0.18, 0.10], scale: [1, 1.08, 1] } : { opacity: 0.10, scale: 1 }}
-                transition={(isInView && !shouldReduceAnimations) ? { duration: 13, repeat: Infinity, ease: 'easeInOut' } : undefined}
+            <div
                 style={{
                     position: 'absolute',
                     top: '50%',
                     left: '50%',
                     width: 'min(900px, 80vw)',
                     height: 'min(900px, 80vw)',
-                    x: '-50%',
-                    y: '-50%',
+                    transform: 'translate(-50%, -50%)',
                     background: 'transparent',
                     borderRadius: '50%',
                     filter: heavyBlur,
                     opacity: theme.mode === 'dark' ? 0.18 : 0.10,
                     pointerEvents: 'none',
                     zIndex: 0,
-                    willChange: 'opacity, transform'
+                    contain: 'paint'
                 }}
             />
 
@@ -141,7 +138,7 @@ const Contact = ({ data }) => {
                         backdropFilter: 'blur(10px)'
                     }}>
                         <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: theme.accent, boxShadow: `0 0 8px ${theme.accent}`, display: 'inline-block', flexShrink: 0 }} />
-                        <span style={{ fontSize: '0.82rem', fontWeight: '700', color: theme.accent, letterSpacing: '1.5px', textTransform: 'uppercase' }}>Open to Work — Available Now</span>
+                        <span style={{ fontSize: '0.82rem', fontWeight: '700', color: theme.primaryText, letterSpacing: '1.5px', textTransform: 'uppercase' }}>Open to Work — Available Now</span>
                     </div>
                     <p style={{ color: theme.mutedText, fontSize: '1rem', maxWidth: '680px', margin: '0 auto' }}>
                         Ready to elevate your infrastructure? I&apos;m available for new opportunities in Cloud Architecture and DevOps engineering.
@@ -163,7 +160,7 @@ const Contact = ({ data }) => {
                     <motion.div
                         initial={{ x: isMobile ? 0 : -30, y: isMobile ? 20 : 0 }}
                         whileInView={{ x: 0, y: 0 }}
-                        viewport={{ once: true, amount: 0.1 }}
+                        viewport={{ once: true, margin: "-200px" }}
                         transition={{ duration: 0.6 }}
                         style={{ width: '100%', minWidth: 0 }}
                     >
@@ -177,16 +174,15 @@ const Contact = ({ data }) => {
                         background: theme.cardBg,
                         backdropFilter: 'blur(20px)',
                     }}>
-                        <motion.div
-                            animate={shouldLoop ? { scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] } : { scale: 1, opacity: 0.2 }}
-                            transition={shouldLoop ? { duration: 8, repeat: Infinity, ease: 'easeInOut' } : undefined}
-                        style={{
+                        <div
+                            style={{
                                 position: 'absolute', bottom: '-80px', left: '-80px',
                                 width: '320px', height: '320px',
                                 background: 'transparent',
                                 borderRadius: '50%', filter: (isMobile || shouldReduceAnimations) ? 'blur(18px)' : 'blur(60px)',
                                 pointerEvents: 'none', zIndex: 0,
-                                willChange: 'transform, opacity'
+                                opacity: 0.2,
+                                contain: 'paint'
                             }}
                         />
                         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -262,7 +258,7 @@ const Contact = ({ data }) => {
                     <motion.div
                         initial={{ x: isMobile ? 0 : 30, y: isMobile ? 20 : 0 }}
                         whileInView={{ x: 0, y: 0 }}
-                        viewport={{ once: true, amount: 0.1 }}
+                        viewport={{ once: true, margin: "-200px" }}
                         transition={{ duration: 0.6, delay: 0.1 }}
                         style={{ width: '100%', minWidth: 0 }}
                     >
@@ -275,17 +271,16 @@ const Contact = ({ data }) => {
                         background: theme.cardBg,
                         backdropFilter: 'blur(20px)',
                     }}>
-                        <motion.div
-                            animate={shouldLoop ? { scale: [1, 1.2, 1], opacity: [0.15, 0.35, 0.15] } : { scale: 1, opacity: 0.15 }}
-                            transition={shouldLoop ? { duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 } : undefined}
+                        <div
                             style={{
-                                    position: 'absolute', top: '-80px', right: '-80px',
-                                    width: '300px', height: '300px',
-                                    background: 'transparent',
-                                    borderRadius: '50%', filter: (isMobile || shouldReduceAnimations) ? 'blur(18px)' : 'blur(60px)',
-                                    pointerEvents: 'none', zIndex: 0,
-                                    willChange: 'transform, opacity'
-                                }}
+                                position: 'absolute', top: '-80px', right: '-80px',
+                                width: '300px', height: '300px',
+                                background: 'transparent',
+                                borderRadius: '50%', filter: (isMobile || shouldReduceAnimations) ? 'blur(18px)' : 'blur(60px)',
+                                pointerEvents: 'none', zIndex: 0,
+                                opacity: 0.15,
+                                contain: 'paint'
+                            }}
                         />
                         <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column' }}>
                             <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: theme.primaryText, marginBottom: '0.3rem' }}>Send a Message</h3>

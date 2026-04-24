@@ -173,7 +173,7 @@ const Skills = ({ data }) => {
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, amount: 0.1 }}
+                    viewport={{ once: true, margin: "-200px" }}
                     style={{
                         display: 'grid',
                         // Force 4 columns on non-mobile screens to achieve the 4x2 layout (assuming 8 items)

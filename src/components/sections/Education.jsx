@@ -64,7 +64,7 @@ const Education = ({ data }) => {
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, amount: 0.1 }}
+                    viewport={{ once: true, margin: "-200px" }}
                     style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '20px' }}
                 >
                     {data.map((item, idx) => {

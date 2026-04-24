@@ -29,32 +29,28 @@ const Blog = ({ data }) => {
     return (
         <section ref={sectionRef} id="blog" style={{ position: 'relative', overflow: 'hidden', backgroundColor: 'transparent' }}>
             {/* Nucleus glow (background) sized for this panel (LEFT) */}
-            <motion.div
-                animate={(isInView && !shouldReduceAnimations) ? { opacity: [0.10, 0.18, 0.10], scale: [1, 1.08, 1] } : false}
-                transition={(isInView && !shouldReduceAnimations) ? { duration: 13, repeat: Infinity, ease: 'easeInOut' } : undefined}
+            <div
                 style={{
                     position: 'absolute',
                     top: '50%',
                     left: isMobile ? '50%' : '22%',
                     width: 'min(980px, 78vw)',
                     height: 'min(980px, 78vw)',
-                    x: '-50%',
-                    y: '-50%',
-                    transformOrigin: 'center',
+                    transform: 'translate(-50%, -50%)',
                     background: 'radial-gradient(circle, var(--netflix-red) 0%, transparent 72%)',
                     borderRadius: '50%',
                     filter: heavyBlur,
                     opacity: theme.mode === 'dark' ? 0.22 : 0.14,
-                    willChange: 'transform, opacity',
                     pointerEvents: 'none',
-                    zIndex: 0
+                    zIndex: 0,
+                    contain: 'paint'
                 }}
             />
             <div className="section-padding" style={{ padding: isMobile ? '100px 15px 40px' : '120px 6% 80px', background: 'transparent', minHeight: '100vh', position: 'relative', zIndex: 1 }}>
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: true, margin: "-200px" }}
                     style={{ textAlign: 'center', marginBottom: '80px' }}
                 >
                     <h2 style={{ fontSize: 'clamp(1.9rem, 3.8vw, 2.8rem)', fontWeight: '800', marginBottom: '20px', color: theme.primaryText }}>
@@ -77,7 +73,7 @@ const Blog = ({ data }) => {
                             key={post.id}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
+                            viewport={{ once: true, margin: "-200px" }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                             whileHover={{ y: -10 }}
                             style={{ height: '100%' }}

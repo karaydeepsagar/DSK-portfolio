@@ -41,7 +41,7 @@ const Experience = ({ data }) => {
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: true, margin: "-200px" }}
                     style={{ textAlign: 'center', marginBottom: '80px' }}
                 >
                     <h2 style={{ fontSize: 'clamp(1.9rem, 3.8vw, 2.8rem)', fontWeight: '800', marginBottom: '20px', color: theme.primaryText }}>
@@ -79,24 +79,21 @@ const Experience = ({ data }) => {
                                 pointerEvents: 'none',
                                 zIndex: 0,
                                 opacity: theme.mode === 'dark' ? 0.35 : 0.22,
-                                filter: theme.mode === 'dark' ? 'blur(1.4px)' : 'blur(1.1px)'
+                                filter: theme.mode === 'dark' ? 'blur(1.4px)' : 'blur(1.1px)',
+                                contain: 'paint'
                             }}>
-                                <motion.div
-                                    animate={shouldLoop ? { scale: [1, 1.12, 1], opacity: [0.30, 0.55, 0.30] } : false}
-                                    transition={shouldLoop ? { duration: 10, repeat: Infinity, ease: 'easeInOut' } : undefined}
+                                <div
                                     style={{
                                         position: 'absolute',
                                         top: '50%',
                                         left: '50%',
                                         width: isMobile ? 'min(88%, 440px)' : 'min(72%, 560px)',
                                         height: isMobile ? 'min(88%, 440px)' : 'min(72%, 560px)',
-                                        x: '-50%',
-                                        y: '-50%',
-                                        transformOrigin: 'center',
+                                        transform: 'translate(-50%, -50%)',
                                         background: `radial-gradient(circle, ${theme.mode === 'dark' ? '#ffffffcf' : '#94a3b8'} 0%, transparent 75%)`,
                                         borderRadius: '50%',
                                         filter: heavyBlur,
-                                        willChange: 'transform, opacity'
+                                        contain: 'paint'
                                     }}
                                 />
 
