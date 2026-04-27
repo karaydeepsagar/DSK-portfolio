@@ -32,6 +32,13 @@ export default defineConfig({
   build: {
     target: 'es2020',
     cssCodeSplit: true,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
     rollupOptions: {
       output: {
         manualChunks: {
@@ -43,7 +50,8 @@ export default defineConfig({
         chunkFileNames: 'assets/[name].[hash].js',
         entryFileNames: 'assets/[name].[hash].js',
       }
-    }
+    },
+    reportCompressedSize: false
   },
   resolve: {
     alias: {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 
@@ -6,12 +6,20 @@ import { useBreakpoint } from '../../hooks/useBreakpoint';
  * SpaceAtmosphere: A high-performance canvas-based background 
  * that replaces pitch-black with a minimalist starfield and 
  * subtle maroon/grey/crimson nebulae.
+ * 
+ * Performance optimizations:
+ * - Throttled redraws based on scroll position changes
+ * - Reduced star count on mobile (60 vs 120)
+ * - Efficient twinkling with minimal calculations
+ * - No shadow effects (expensive on canvas)
  */
 const SpaceAtmosphere = () => {
     const { theme } = useTheme();
     const { isMobile } = useBreakpoint();
     const canvasRef = useRef(null);
     const requestRef = useRef(null);
+    const lastScrollRef = useRef(0);
+    const [isTabActive, setIsTabActive] = useState(true);
 
     // Only active in dark mode
     const isActive = theme.mode === 'dark';
@@ -20,10 +28,11 @@ const SpaceAtmosphere = () => {
         if (!isActive) return;
 
         const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { alpha: false }); // Disable alpha for performance
         let width, height;
         let stars = [];
         let smoothedScroll = window.scrollY;
+        let frameCount = 0;
 
         const STAR_COUNT = isMobile ? 60 : 120; // Slightly reduced for max smoothness
         const COLORS = ['#ffffff', '#ffffff', '#ffffff', '#e2e8f0', '#ef444422'];
@@ -59,7 +68,22 @@ const SpaceAtmosphere = () => {
 
         const draw = () => {
             // Smooth the scroll value to eliminate jitter (interpolation)
-            smoothedScroll += (window.scrollY - smoothedScroll) * 0.15;
+            const currentScroll = window.scrollY;
+            const scrollDelta = Math.abs(currentScroll - lastScrollRef.current);
+            
+            smoothedScroll += (currentScroll - smoothedScroll) * 0.15;
+            frameCount++;
+            
+            // Optimization: Only redraw if scroll changed significantly OR tab is inactive
+            // This prevents excessive redraws when page is idle
+            const shouldRedraw = scrollDelta > 5 || frameCount % 2 === 0;
+            
+            if (!shouldRedraw && isTabActive) {
+                requestRef.current = requestAnimationFrame(draw);
+                return;
+            }
+            
+            lastScrollRef.current = currentScroll;
             
             ctx.clearRect(0, 0, width, height);
 
@@ -104,12 +128,20 @@ const SpaceAtmosphere = () => {
             init();
         };
 
+        // Handle page visibility to reduce CPU usage when tab is inactive
+        const onVisibilityChange = () => {
+            setIsTabActive(!document.hidden);
+        };
+
         init();
         draw();
 
         window.addEventListener('resize', onResize);
+        document.addEventListener('visibilitychange', onVisibilityChange);
+        
         return () => {
             window.removeEventListener('resize', onResize);
+            document.removeEventListener('visibilitychange', onVisibilityChange);
             if (requestRef.current) {
                 cancelAnimationFrame(requestRef.current);
             }

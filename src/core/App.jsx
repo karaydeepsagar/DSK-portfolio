@@ -1,14 +1,17 @@
-import React, { useState, useCallback, Suspense, lazy } from 'react';
+import React, { useState, useCallback, Suspense, lazy, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ThemeProvider, useTheme } from '../context/ThemeContext';
 import ErrorBoundary from '../components/layout/ErrorBoundary';
 import DSKIntro from '../components/effects/DSKIntro';
 import Navbar from '../components/layout/Navbar';
 import Hero from '../components/sections/Hero';
-import PremiumEffects from '../components/effects/PremiumEffects';
-import SpaceAtmosphere from '../components/effects/SpaceAtmosphere';
-import CustomCursor from '../components/effects/CustomCursor';
 import { portfolioData } from '../data/portfolioData';
+import { useWebVitals } from '../hooks/useWebVitals';
+
+// Lazy load heavy effect components to reduce initial bundle and improve FCP
+const PremiumEffects = lazy(() => import('../components/effects/PremiumEffects'));
+const SpaceAtmosphere = lazy(() => import('../components/effects/SpaceAtmosphere'));
+const CustomCursor = lazy(() => import('../components/effects/CustomCursor'));
 
 // Lazy loading non-critical sections to reduce initial bundle size
 const Projects = lazy(() => import('../components/sections/Projects'));
@@ -30,9 +33,17 @@ const AppContent = () => {
             minHeight: '100vh', 
             transition: 'background-color 0.4s ease' 
         }}>
-            <SpaceAtmosphere />
-            <CustomCursor />
-            <PremiumEffects />
+            {/* Lazy-loaded effect components render when dependencies load */}
+            <Suspense fallback={null}>
+                <SpaceAtmosphere />
+            </Suspense>
+            <Suspense fallback={null}>
+                <CustomCursor />
+            </Suspense>
+            <Suspense fallback={null}>
+                <PremiumEffects />
+            </Suspense>
+            
             <Navbar />
             <Hero data={portfolioData.personalInfo} />
 
@@ -74,6 +85,16 @@ const AppContent = () => {
 function App() {
     const [showIntro, setShowIntro] = useState(true);
     const handleIntroComplete = useCallback(() => setShowIntro(false), []);
+
+    // Monitor Web Vitals for performance debugging
+    useEffect(() => {
+        useWebVitals((metric) => {
+            // Log metrics for debugging (only in development)
+            if (process.env.NODE_ENV === 'development') {
+                console.log(`${metric.name}: ${metric.value}ms (${metric.rating})`);
+            }
+        });
+    }, []);
 
     return (
         <ErrorBoundary>
