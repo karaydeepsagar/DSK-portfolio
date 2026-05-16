@@ -5,7 +5,7 @@
     <link rel="icon" type="image/png" href="/dsk-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#141414" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.emailjs.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.emailjs.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.emailjs.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' ws://localhost:* http://localhost:* https://api.emailjs.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://api.emailjs.com;">
     <meta name="description" content="Deep Sagar Karay - Cloud Architect & DevOps Engineer specializing in AWS, Azure, GCP, CI/CD Automation, and Kubernetes orchestration.">
     <meta name="keywords" content="Deep Sagar Karay, Cloud Engineer, DevOps, AWS, Azure, Python, Kubernetes, Terraform, Personal Portfolio">
     <meta property="og:title" content="Deep Sagar Karay | Cloud DevOps Engineer">
@@ -19,11 +19,20 @@
     <meta name="twitter:image" content="https://kds-personal-portfolio.vercel.app/og-preview.png">
     <link rel="canonical" href="https://kds-personal-portfolio.vercel.app/">
     <title>Deep Sagar Karay | Cloud DevOps Engineer</title>
-    <!-- DNS prefetch for external resources -->
+    <!-- DNS prefetch + preconnect for external resources -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="dns-prefetch" href="https://images.credly.com">
     <link rel="dns-prefetch" href="https://img.shields.io">
+    <link rel="dns-prefetch" href="https://cdn.emailjs.com">
+    <link rel="dns-prefetch" href="https://api.emailjs.com">
+    <!-- Preconnect to external image CDN domains -->
+    <link rel="preconnect" href="https://controlmonkey.io">
+    <link rel="preconnect" href="https://www.sangfor.com">
+    <link rel="preconnect" href="https://devops.com">
+    <link rel="preconnect" href="https://astconsulting.in">
+    <link rel="preconnect" href="https://www.simplyblock.io">
+    <link rel="preconnect" href="https://media2.dev.to">
     <!-- Font preconnect + preload with font-display: swap for faster text rendering -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
