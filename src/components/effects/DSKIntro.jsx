@@ -149,7 +149,7 @@ const DSKIntro = ({ onComplete }) => {
 
             {/* Main Text */}
             <div style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
-                <div style={{ position: 'relative', overflow: 'hidden', padding: '10px 40px' }}>
+                <div style={{ position: 'relative', overflow: 'hidden', padding: '10px 20px' }}>
                     <div
                         style={{
                             display: 'flex',
@@ -171,7 +171,7 @@ const DSKIntro = ({ onComplete }) => {
                                         ease: EASING.spring
                                     }}
                                     style={{
-                                        fontSize: 'clamp(3.5rem, 11vw, 7rem)',
+                                        fontSize: 'clamp(2rem, 11vw, 7rem)',
                                         fontWeight: '900',
                                         color: textColor,
                                         margin: 0,
@@ -195,7 +195,7 @@ const DSKIntro = ({ onComplete }) => {
                                 ease: EASING.spring
                             }}
                             style={{
-                                fontSize: 'clamp(3.5rem, 11vw, 7rem)',
+                                fontSize: 'clamp(2rem, 11vw, 7rem)',
                                 fontWeight: '300',
                                 color: theme.accent,
                                 margin: 0,
@@ -246,7 +246,7 @@ const DSKIntro = ({ onComplete }) => {
                     transition={{ duration: DURATION.subtitle, delay: DURATION.subtitleDelay }}
                     style={{
                         marginTop: '35px',
-                        fontSize: 'clamp(1rem, 2vw, 1.4rem)',
+                        fontSize: 'clamp(0.7rem, 2vw, 1.4rem)',
                         letterSpacing: '0.5em',
                         color: theme.secondaryText,
                         textTransform: 'uppercase',
