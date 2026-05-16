@@ -15,7 +15,7 @@
 <br/>
 
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)
-![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-5.4.21-646CFF?style=flat-square&logo=vite&logoColor=white)
 ![Framer Motion](https://img.shields.io/badge/Framer%20Motion-11-0055FF?style=flat-square&logo=framer&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Deployed-Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)
@@ -31,7 +31,7 @@
 <td width="50%">
 
 ### 🎬 Animated Intro
-Full-screen particle intro with GPU-optimised triangle system. 120 particles on desktop, auto-reduced on mobile for smooth 60fps.
+Full-screen DSK intro animation with letter stagger effects, scanning light bar, and tagline reveal.
 
 ### 🪐 DevOps Atom
 Three concentric orbiting rings of cloud & DevOps icons (Docker, K8s, AWS, Azure, GCP, Terraform, Datadog…) — the centrepiece of the Hero section.
@@ -55,7 +55,10 @@ System-aware with instant manual toggle. All components fully theme-reactive.
 EmailJS integration — fully functional, no backend required. Credentials guarded with env-var validation.
 
 ### 📦 Production Ready
-Multi-stage Dockerfile → Nginx. `vercel.json` SPA routing. OpenGraph + Twitter card meta. `canonical` URL set.
+Multi-stage Dockerfile → Nginx with non-root user. `vercel.json` SPA routing. OpenGraph + Twitter card meta. `canonical` URL set.
+
+### 🛡️ Security Hardened
+Nginx configured with security headers (X-Frame-Options, X-Content-Type-Options, X-XSS-Protection). Gzip compression enabled.
 
 ### 📱 Fully Responsive
 Mobile, tablet, desktop, landscape — all breakpoints handled via a custom `useBreakpoint` hook.
@@ -98,34 +101,39 @@ Mobile, tablet, desktop, landscape — all breakpoints handled via a custom `use
 DSK-portfolio/
 │
 ├── 📁 public/
-│   └── Resume.pdf                  # Downloadable CV
+│   ├── dsk-icon.png                 # PWA icon
+│   ├── dsk-logo.png                 # Logo
+│   ├── og-preview.png               # Social preview image
+│   └── Resume.pdf                   # Downloadable CV
 │
 ├── 📁 src/
 │   ├── 📁 components/
-│   │   ├── 📁 common/             # Shared components (e.g., ThemeToggle)
-│   │   ├── 📁 effects/            # Visual effects (e.g., CustomCursor)
-│   │   ├── 📁 layout/             # Layout components (e.g., Navbar)
-│   │   ├── 📁 sections/           # Page sections (e.g., Blog, Contact)
-│   │   └── 📁 icons/              # Iconography
+│   │   ├── 📁 common/               # Shared components (ThemeToggle, SpotlightCard, SectionSkeleton)
+│   │   ├── 📁 effects/              # Visual effects (DSKIntro, CustomCursor, SpaceAtmosphere, IndustrialBackground, PremiumEffects)
+│   │   ├── 📁 layout/              # Layout components (Navbar, ErrorBoundary, ScrollToTop)
+│   │   └── 📁 sections/             # Page sections (Hero, Projects, Experience, Skills, Education, Blog, Contact)
 │   │
 │   ├── 📁 context/
-│   │   └── ThemeContext.jsx        # 🌗 Global dark/light theme
+│   │   └── ThemeContext.jsx         # 🌗 Global dark/light theme
 │   │
 │   ├── 📁 data/
-│   │   └── portfolioData.js        # 📊 All content (experience, projects, skills…)
+│   │   └── portfolioData.js         # 📊 All content (experience, projects, skills…)
 │   │
 │   ├── 📁 hooks/
-│   │   └── useBreakpoint.js        # 📐 Responsive + performance reduction flags
+│   │   ├── useBreakpoint.js         # 📐 Responsive + performance reduction flags
+│   │   ├── useLazyLoadImage.js      # Lazy image loading
+│   │   └── useWebVitals.js          # Performance monitoring
 │   │
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
+│   ├── 📁 core/
+│   │   ├── App.jsx                  # Main app component
+│   │   ├── main.jsx                 # Entry point
+│   │   └── index.css                # Global styles
 │
-├── 🐳 Dockerfile                   # Multi-stage build → Nginx
-├── nginx.conf                      # SPA routing config
-├── vite.config.js
-├── vercel.json                     # Vercel SPA routing rewrites
-└── .env.example                    # EmailJS credential template
+├── 🐳 Dockerfile                     # Multi-stage build → Nginx (Node 20, non-root user)
+├── nginx.conf                       # SPA routing + security headers + gzip
+├── vite.config.js                   # Vite configuration with PWA & code splitting
+├── vercel.json                      # Vercel SPA routing rewrites
+└── .env.example                     # EmailJS credential template
 ```
 
 ---
@@ -134,7 +142,7 @@ DSK-portfolio/
 
 ### Prerequisites
 
-![Node](https://img.shields.io/badge/Node.js-v18+-339933?style=flat-square&logo=node.js&logoColor=white)
+![Node](https://img.shields.io/badge/Node.js-v20+-339933?style=flat-square&logo=node.js&logoColor=white)
 ![npm](https://img.shields.io/badge/npm-latest-CB3837?style=flat-square&logo=npm&logoColor=white)
 
 ### Setup
@@ -193,6 +201,12 @@ docker run -d -p 8080:80 --name dsk-portfolio dsk-portfolio
 
 Open [http://localhost:8080](http://localhost:8080)
 
+### Docker Features
+- **Multi-stage build** - Node 20 for build, Alpine Nginx for serving
+- **Non-root user** - Security hardened (runs as `appuser`)
+- **Health check** - Container health monitoring enabled
+- **Gzip compression** - Faster asset delivery
+
 ---
 
 ## ☁️ Deployment
@@ -208,6 +222,16 @@ Push to `main` → Vercel auto-deploys. Zero config needed.
 
 ---
 
+## 🛡️ Security Features
+
+- **Non-root container** - Docker runs as unprivileged user
+- **Security headers** - X-Frame-Options, X-Content-Type-Options, X-XSS-Protection, Referrer-Policy
+- **CSP headers** - Content Security Policy configured in index.html
+- **Hidden file protection** - Nginx blocks access to dotfiles
+- **Gzip compression** - Reduces attack surface through minification
+
+---
+
 ## 📬 Contact
 
 <div align="center">
@@ -220,119 +244,11 @@ Push to `main` → Vercel auto-deploys. Zero config needed.
 
 </div>
 
-
-## Features
-
-- **Animated Intro** — Full-screen DSK intro with particle system, GPU-optimised for mobile
-- **DevOps Atom** — Three-ring orbiting icon cluster in the Hero section
-- **Custom Cursor** — Velocity-liquid cursor with stretch/squash physics and theme awareness
-- **Dark / Light Theme** — System-aware with manual toggle
-- **Sections** — Hero, Projects, Experience, Skills, Education, Blog, Contact
-- **Contact Form** — Powered by EmailJS (no backend required)
-- **Resume Download** — Direct PDF download from Hero CTA
-- **Lazy Loading** — All non-critical sections code-split with React Suspense
-- **Dockerized** — Multi-stage production build served via Nginx
-- **Deployed on Vercel** — CI/CD via Vercel Git integration
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Framework | React 18 + Vite 5 |
-| Animations | Framer Motion 11 |
-| Icons | Lucide React, React Icons (SI, VSC) |
-| Fonts | Inter, Outfit (Google Fonts) |
-| Contact | EmailJS (`@emailjs/browser`) |
-| Containerisation | Docker + Nginx |
-| Deployment | Vercel |
-
----
-
----
-
-## Local Development
-
-### Prerequisites
-- Node.js v18+
-- npm
-
-### Setup
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/karaydeepsagar/DSK-portfolio.git
-cd DSK-portfolio
-
-# 2. Install dependencies
-npm install
-
-# 3. Configure environment variables
-cp .env.example .env
-# Fill in your EmailJS credentials (see Environment Variables section)
-
-# 4. Start dev server
-npm run dev
-```
-
-Open [http://localhost:5173](http://localhost:5173)
-
-### Build for Production
-
-```bash
-npm run build
-npm run preview   # Preview the production build locally
-```
-
----
-
-## Environment Variables
-
-The contact form uses [EmailJS](https://www.emailjs.com/). Create a `.env` file at the project root:
-
-```env
-VITE_EMAILJS_SERVICE_ID=your_service_id
-VITE_EMAILJS_TEMPLATE_ID=your_template_id
-VITE_EMAILJS_PUBLIC_KEY=your_public_key
-```
-
-> When deploying to Vercel, add these same keys under **Settings → Environment Variables** in your Vercel project dashboard.
-
----
-
-## Docker
-
-Run the production build in a lightweight Nginx container — no Node.js required.
-
-```bash
-# Build the image
-docker build -t dsk-portfolio .
-
-# Run the container
-docker run -d -p 8080:80 --name dsk-portfolio dsk-portfolio
-```
-
-Open [http://localhost:8080](http://localhost:8080)
-
----
-
-## Deployment (Vercel)
-
-The project is deployed via Vercel's Git integration. `vercel.json` configures SPA routing so all paths resolve to `index.html`.
-
-```json
-// vercel.json (already configured)
-{ "rewrites": [{ "source": "/(.*)", "destination": "/" }] }
-```
-
-Push to `main` — Vercel auto-deploys.
-
 ---
 
 ## License
 
-This project is for personal use. All content, graphics, and data belong to {DSK} Deep Sagar Karay .
+This project is for personal use. All content, graphics, and data belong to {DSK} Deep Sagar Karay.
 
 ---
 
@@ -345,6 +261,5 @@ This project is for personal use. All content, graphics, and data belong to {DSK
 *Built with React · Powered by Vite · Deployed on Vercel*
 
 </div>
-
 
 ---

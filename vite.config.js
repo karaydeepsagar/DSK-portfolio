@@ -14,6 +14,9 @@ export default defineConfig({
         short_name: 'DSK Portfolio',
         description: 'Cloud Architect & DevOps Engineer Portfolio',
         theme_color: '#141414',
+        background_color: '#141414',
+        display: 'standalone',
+        orientation: 'portrait',
         icons: [
           {
             src: 'dsk-icon.png',
@@ -24,6 +27,35 @@ export default defineConfig({
             src: 'dsk-icon.png',
             sizes: '512x512',
             type: 'image/png'
+          }
+        ]
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-stylesheets',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-webfonts',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/.*\.(png|jpg|jpeg|svg|gif|webp)/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'portfolio-images',
+              expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 30 }
+            }
           }
         ]
       }

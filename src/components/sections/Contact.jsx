@@ -14,6 +14,10 @@ const Contact = ({ data }) => {
     const [status, setStatus] = useState({ sending: false, sent: false, error: false });
     const [copyError, setCopyError] = useState(false);
     const { isMobile } = useBreakpoint();
+
+    // Rate limiting: track last submission time
+    const lastSubmissionRef = useRef(0);
+    const RATE_LIMIT_MS = 30000; // 30 seconds between submissions
     const heavyBlur = (isMobile || shouldReduceAnimations)
         ? (theme.mode === 'dark' ? 'blur(30px)' : 'blur(20px)')
         : (theme.mode === 'dark' ? 'blur(130px)' : 'blur(90px)');
@@ -33,6 +37,17 @@ const Contact = ({ data }) => {
 
     const shouldLoop = isInView && !shouldReduceAnimations;
 
+    // Input sanitization: strip HTML/script tags
+    const sanitizeInput = (str) => {
+        if (!str || typeof str !== 'string') return '';
+        return str
+            .replace(/<[^>]*>/g, '')
+            .replace(/javascript:/gi, '')
+            .replace(/on\w+=/gi, '')
+            .trim()
+            .slice(0, 1000); // Limit length
+    };
+
     const copyToClipboard = async (text, type) => {
         try {
             await navigator.clipboard.writeText(text);
@@ -47,15 +62,29 @@ const Contact = ({ data }) => {
     const sendEmail = (e) => {
         e.preventDefault();
 
+        // Rate limiting check
+        const now = Date.now();
+        if (now - lastSubmissionRef.current < RATE_LIMIT_MS) {
+            setStatus({ sending: false, sent: false, error: true });
+            setTimeout(() => setStatus(s => ({ ...s, error: false })), 3000);
+            return;
+        }
+
+        // Sanitize form inputs
+        const sanitizedName = sanitizeInput(formState.name);
+        const sanitizedEmail = sanitizeInput(formState.email);
+        const sanitizedCompany = sanitizeInput(formState.company);
+
         // Simple email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formState.email)) {
+        if (!emailRegex.test(sanitizedEmail)) {
             setStatus({ sending: false, sent: false, error: true });
             setTimeout(() => setStatus(s => ({ ...s, error: false })), 3000);
             return;
         }
 
         setStatus({ sending: true, sent: false, error: false });
+        lastSubmissionRef.current = now;
 
         const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
         const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;

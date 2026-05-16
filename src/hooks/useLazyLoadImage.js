@@ -9,7 +9,10 @@
 
 import { useRef, useState, useEffect } from 'react';
 
-export const useLazyLoadImage = (src, placeholderSrc = '') => {
+// Placeholder SVG for smooth blur-up effect
+const PLACEHOLDER_SVG = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23141414" width="100%25" height="100%25"/%3E%3C/svg%3E';
+
+export const useLazyLoadImage = (src, placeholderSrc = PLACEHOLDER_SVG) => {
   const imageRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(placeholderSrc || src);
   const [isLoaded, setIsLoaded] = useState(!placeholderSrc);
