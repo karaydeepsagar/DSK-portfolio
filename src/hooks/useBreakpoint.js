@@ -6,12 +6,16 @@ const _isTV =
     typeof navigator !== 'undefined' && _TV_RE.test(navigator.userAgent);
 const _cores =
     typeof navigator !== 'undefined' ? (navigator.hardwareConcurrency || 4) : 4;
+const _deviceMemory =
+    typeof navigator !== 'undefined' && 'deviceMemory' in navigator
+        ? navigator.deviceMemory
+        : 4;
 const _prefersReducedMotion =
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/** True on Smart TVs or devices with ≤ 2 CPU cores. */
-export const isLowPowerDevice = _isTV || _cores <= 2;
+/** True on Smart TVs, coarse-pointer devices, or weaker CPUs / memory profiles. */
+export const isLowPowerDevice = _isTV || _cores <= 2 || _deviceMemory <= 4;
 
 /** True when the user's OS requests reduced motion. */
 export const prefersReducedMotion = _prefersReducedMotion;

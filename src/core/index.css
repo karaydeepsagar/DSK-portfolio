@@ -48,7 +48,7 @@ body {
   --font-body: 'Inter', sans-serif;
 }
 
-/* Hide native cursor on pointer (non-touch) devices */
+/* Hide native cursor on pointer (non-touch) devices so the lightweight custom cursor can be visible */
 @media (pointer: fine) {
 
   *,

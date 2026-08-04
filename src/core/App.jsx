@@ -38,9 +38,6 @@ const AppContent = () => {
                 <SpaceAtmosphere />
             </Suspense>
             <Suspense fallback={null}>
-                <CustomCursor />
-            </Suspense>
-            <Suspense fallback={null}>
                 <PremiumEffects />
             </Suspense>
             
@@ -99,6 +96,9 @@ function App() {
     return (
         <ErrorBoundary>
             <ThemeProvider>
+                <Suspense fallback={null}>
+                    <CustomCursor />
+                </Suspense>
                 <AnimatePresence mode="wait">
                     {showIntro ? (
                         <DSKIntro key="intro" onComplete={handleIntroComplete} />
